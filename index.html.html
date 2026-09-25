@@ -79,14 +79,14 @@
   /* ---- couverture ---- */
   body.is-cover .topbar,
   body.is-cover .wrap { display: none; }
-  .cover { display: none; background: #EBF0ED; min-height: 100vh; min-height: 100dvh; flex-direction: column; }
+  .cover { display: none; background: linear-gradient(180deg,#F7EFE0 0%,#F0F1E9 38%,#E4EDE8 100%); min-height: 100vh; min-height: 100dvh; flex-direction: column; }
   .cover.is-on { display: flex; }
   .cover__top { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 24px 0 24px; }
-  .cover__mark { font-family: var(--display); font-size: 46px; font-weight: 600; letter-spacing: 0.1em; color: var(--ink); line-height: 1; }
-  .cover__sub { margin-top: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #5E7670; }
+  .cover__mark { font-family: var(--display); font-size: 46px; font-weight: 600; letter-spacing: 0.1em; color: var(--accent); line-height: 1; }
+  .cover__sub { margin-top: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #A2571A; }
   .cover__go { display: flex; justify-content: center; padding: 0 0 6px 0; }
-  .arrowbtn { appearance: none; border: 0; background: var(--ink); color: #F7F4EE; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 18px rgba(22, 33, 31, 0.22); }
-  .arrowbtn:hover { background: var(--accent); }
+  .arrowbtn { appearance: none; border: 0; background: var(--accent); color: #F7F4EE; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 18px rgba(22, 33, 31, 0.22); }
+  .arrowbtn:hover { background: #0A4541; }
   .cover__art { line-height: 0; }
   .cover__art svg { display: block; width: 100%; height: auto; }
 
@@ -256,11 +256,11 @@
   </div>
   <div class="cover__art">
 <svg viewBox="0 0 960 400" role="img" aria-label="Illustration d'un chantier de construction : grue, bâtiment en cours, palissade, camion-citerne et travailleurs">
-      <rect x="0" y="0" width="960" height="400" fill="#EBF0ED"/>
-      <circle cx="812" cy="86" r="42" fill="#F3E3C6"/>
+      <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4EDE8"/><stop offset="1" stop-color="#F3E7D4"/></linearGradient></defs><rect x="0" y="0" width="960" height="400" fill="url(#sky)"/>
+      <circle cx="812" cy="86" r="74" fill="#F7DFB4" opacity="0.55"/><circle cx="812" cy="86" r="42" fill="#F2C97C"/>
 
       <!-- arriere-plan : ville -->
-      <g fill="#CBD8D3">
+      <g fill="#C3D3CD">
         <rect x="24" y="196" width="66" height="124"/>
         <rect x="100" y="164" width="52" height="156"/>
         <rect x="162" y="212" width="74" height="108"/>
@@ -269,8 +269,8 @@
       </g>
 
       <!-- sol -->
-      <rect x="0" y="318" width="960" height="82" fill="#E0DACD"/>
-      <rect x="0" y="318" width="960" height="4" fill="#CFC7B6"/>
+      <rect x="0" y="318" width="960" height="82" fill="#DCCFB4"/>
+      <rect x="0" y="318" width="960" height="4" fill="#C2B08C"/>
 
       <!-- batiment en construction -->
       <g>
@@ -281,7 +281,7 @@
           <rect x="574" y="232" width="222" height="7"/>
           <rect x="574" y="278" width="222" height="7"/>
         </g>
-        <g fill="#C7D3CE">
+        <g fill="#F6E4BE">
           <rect x="600" y="158" width="34" height="22"/><rect x="650" y="158" width="34" height="22"/><rect x="700" y="158" width="34" height="22"/>
           <rect x="600" y="204" width="34" height="22"/><rect x="650" y="204" width="34" height="22"/><rect x="700" y="204" width="34" height="22"/>
           <rect x="600" y="250" width="34" height="22"/><rect x="700" y="250" width="34" height="22"/>
@@ -304,7 +304,7 @@
         <path d="M476 40 L640 66 L476 66 Z" fill="none" stroke="#64796F" stroke-width="3"/>
         <path d="M476 40 L400 66" fill="none" stroke="#64796F" stroke-width="3"/>
         <line x1="648" y1="77" x2="648" y2="168" stroke="#4E6259" stroke-width="2.5"/>
-        <rect x="632" y="168" width="32" height="22" fill="#C46A1F"/>
+        <rect x="632" y="168" width="32" height="22" fill="#D8741F"/>
       </g>
 
       <!-- arbre -->
@@ -417,6 +417,8 @@
     </button>
   </div>
 
+
+  <p class="verline">Plateforme HSE · version 1.0 — septembre 2026 · les données saisies restent dans ce navigateur</p>
 </section>
 
 <!-- ================= GUIDE ================= -->
@@ -481,6 +483,18 @@
   <p class="tiny muted" style="margin:12px 0;"><span id="count">131</span> sous-indicateurs affichés</p>
 
   <div class="card" id="rules"></div>
+  <div class="card card--dl">
+    <h2>Le classeur de calcul</h2>
+    <p class="small">La plateforme n'effectue aucun calcul à partir des cotations. Les
+    quatre indices, les scores de paramètres, les alertes et les non-applicables sont
+    produits par le classeur, puis reportés ici. Le classeur se télécharge ci-dessous
+    et s'ouvre avec Excel.</p>
+    <div class="btnrow">
+      <a class="btn btn--primary" href="OUTIL_HSE.xlsx" download>Télécharger le classeur</a>
+    </div>
+    <p class="tiny muted" style="margin-top:12px;">Le fichier téléchargé est une copie :
+    ce que vous y saisissez ne remonte nulle part et ne concerne que vous.</p>
+  </div>
 </section>
 
 <style>
@@ -492,47 +506,90 @@
 .f:focus{outline:2px solid var(--accent-soft);outline-offset:1px;border-color:var(--accent);}
 .f.wide{grid-column:2 / -1;}
 textarea.f{grid-column:1 / -1;font-family:var(--mono);font-size:12px;resize:vertical;}
+.ctl{align-self:center;font-family:var(--mono);}
+.ctl.ok{color:var(--n5-ink);}
+.ctl.ko{color:var(--alert-strong);font-weight:600;}
 .vrow{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:9px 0;
       border-bottom:1px solid var(--line-soft);}
 .vrow:last-child{border-bottom:0;}
-.vrow .btn{padding:5px 10px;font-size:12.5px;}
+.vrow .btn{padding:5px 10px;font-size:12.5px;min-height:34px;}
 .empty{padding:22px 16px;text-align:center;color:var(--muted);font-size:14px;
        border:1px dashed var(--line);border-radius:10px;background:var(--surface);}
-@media (max-width:640px){
-  .frow{grid-template-columns:1fr 1fr;}
-  .frow>label{grid-column:1 / -1;}
-  .f.wide{grid-column:1 / -1;}
-}
+.verline{margin-top:20px;text-align:center;font-size:11.5px;color:var(--muted);}
+.card--dl{background:var(--accent-soft);border-color:var(--accent-line);}
+.chartwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.chartwrap svg{display:block;min-width:520px;width:100%;height:auto;}
+.ckey{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:12px;}
+.ckey span{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--body);}
+.ckey i{width:14px;height:3px;border-radius:2px;display:block;}
+/* teintes des tuiles, par famille */
+.tile:nth-child(1) .tile__ic,.tile:nth-child(2) .tile__ic{background:#E6F1EF;color:#0E5E58;}
+.tile:nth-child(3) .tile__ic,.tile:nth-child(4) .tile__ic{background:#E3EDF9;color:#1F5C9E;}
+
+.tile:nth-child(5) .tile__ic{background:#EFEAF7;color:#57429B;}
+.tile:nth-child(6) .tile__ic,.tile:nth-child(8) .tile__ic{background:#FBEADF;color:#A65317;}
+.tile:nth-child(7) .tile__ic{background:#E5F0E4;color:#2E7D4F;}
+
+/* ---- couleur par famille, tuiles et pages ---- */
+.tile{--tc:#0E5E58;--ts:#E6F1EF;border-top:3px solid var(--tc);transition:background .15s,border-color .15s;}
+.tile:nth-child(3),.tile:nth-child(4){--tc:#1F5C9E;--ts:#E3EDF9;}
+.tile:nth-child(5){--tc:#57429B;--ts:#EFEAF7;}
+.tile:nth-child(6),.tile:nth-child(8){--tc:#A65317;--ts:#FBEADF;}
+.tile:nth-child(7){--tc:#2E7D4F;--ts:#E5F0E4;}
+.tile:hover{background:var(--ts);border-color:var(--line);border-top-color:var(--tc);}
+.tile__n{color:var(--tc);}
+
+.panel{--pc:#0E5E58;--ps:#E6F1EF;--pl:#C9DCD8;}
+#v-import,#v-saisie{--pc:#1F5C9E;--ps:#E3EDF9;--pl:#C6D9EE;}
+#v-calcul{--pc:#57429B;--ps:#EFEAF7;--pl:#D4CBE8;}
+#v-rapport,#v-detail{--pc:#A65317;--ps:#FBEADF;--pl:#EED2BB;}
+#v-suivi{--pc:#2E7D4F;--ps:#E5F0E4;--pl:#C6DFC8;}
+/* toute la page hérite de sa couleur de famille */
+.panel{--accent:var(--pc);--accent-soft:var(--ps);--accent-line:var(--pl);}
+
+.panel h1{border-left:4px solid var(--pc);padding-left:13px;}
+.panel > p.small.muted{padding-left:17px;}
+.panel .eyebrow{color:var(--pc);}
+.panel .card{border-top:2px solid var(--pl);}
+.panel .card > h2{display:flex;align-items:center;gap:9px;color:var(--pc);}
+.panel .card > h2::before{content:"";width:5px;height:15px;border-radius:2px;background:var(--pc);flex:0 0 auto;}
+.panel thead th{background:var(--ps);color:var(--pc);padding-top:8px;border-radius:0;}
+.panel .card--flat{background:var(--ps);}
+.panel .card--dl{background:var(--ps);border-color:var(--pl);}
+.panel .btn--primary{background:var(--pc);border-color:var(--pc);}
+.panel .rowlist h3{color:var(--pc);}
+.panel .f:focus{border-color:var(--pc);outline-color:var(--ps);}
 </style>
 
 
 <section class="panel" id="v-import" role="tabpanel" hidden>
   <div class="eyebrow">Entrée des données</div>
   <h1>Saisie des résultats d'une visite</h1>
-  <p class="small muted">Les valeurs se relèvent sur la feuille RAPPORT du classeur de calcul. La
-  plateforme ne recalcule rien à partir des cotations : elle affiche ce que le classeur a produit.
-  Les quatre indices sont la moyenne des trois paramètres de leur dimension, comme dans le
-  classeur.</p>
+  <p class="small muted">Les valeurs se relèvent sur la feuille RAPPORT du classeur.
+  La plateforme ne recalcule rien à partir des cotations : elle affiche ce que le
+  classeur a produit. Les quatre indices sont la moyenne des trois paramètres de leur
+  dimension, comme dans le classeur.</p>
 
   <div class="card">
     <h2>Identification du chantier</h2>
     <div class="form">
-      <div class="frow"><label>Code</label><input class="f" id="f_code" placeholder="CIIEL"></div>
-      <div class="frow"><label>Intitulé</label><input class="f wide" id="f_nom" placeholder="Construction du …"></div>
-      <div class="frow"><label>Localisation</label><input class="f wide" id="f_loc" placeholder="Akpakpa, Cotonou"></div>
+      <div class="frow"><label>Code</label><input class="f" id="f_code" placeholder="Code du chantier"></div>
+      <div class="frow"><label>Intitulé</label><input class="f wide" id="f_nom" placeholder="Nature de l'ouvrage construit"></div>
+      <div class="frow"><label>Localisation</label><input class="f wide" id="f_loc" placeholder="Quartier, commune"></div>
       <div class="frow"><label>Nature</label><select class="f" id="f_nat"><option value="">—</option><option>Bâtiment</option><option>Voirie</option><option>Assainissement</option></select></div>
       <div class="frow"><label>Phase</label><select class="f" id="f_phase"><option value="">—</option><option>Installation</option><option>Terrassement</option><option>Gros œuvre</option><option>Second œuvre</option><option>Finitions</option><option>Repli</option></select></div>
       <div class="frow"><label>Date de visite</label><input class="f" type="date" id="f_date"></div>
-      <div class="frow"><label>Effectif présent</label><input class="f" type="number" min="0" id="f_eff" placeholder="0"><input class="f" type="number" min="0" id="f_femmes" placeholder="dont femmes"></div>
+      <div class="frow"><label>Effectif présent</label><input class="f" type="number" min="0" id="f_eff" placeholder="total"><input class="f" type="number" min="0" id="f_femmes" placeholder="dont femmes"></div>
       <div class="frow"><label>Entreprise</label><input class="f wide" id="f_ent" placeholder="Entreprise exécutante"></div>
       <div class="frow"><label>Évaluateur</label><input class="f wide" id="f_obs" placeholder="Nom de l'observateur"></div>
+      <div class="frow"><label>Version du classeur</label><input class="f wide" id="f_ver" placeholder="version portée par la feuille GUIDE"></div>
     </div>
   </div>
 
   <div class="card">
     <h2>Scores des douze paramètres</h2>
-    <p class="tiny muted" style="margin-bottom:12px;">Trois valeurs par dimension, de 0 à 100 :
-    prévention, protection, conformité.</p>
+    <p class="tiny muted" style="margin-bottom:12px;">Trois valeurs par dimension, de 0
+    à 100 : prévention, protection, conformité.</p>
     <div class="form">
       <div class="frow"><label class="tiny muted"></label><span class="tiny muted">Prévention</span><span class="tiny muted">Protection</span><span class="tiny muted">Conformité</span></div>
       <div class="frow"><label>Santé</label><input class="f" type="number" min="0" max="100" step="0.01" id="f_sa_prv" placeholder="—"><input class="f" type="number" min="0" max="100" step="0.01" id="f_sa_prt" placeholder="—"><input class="f" type="number" min="0" max="100" step="0.01" id="f_sa_cnf" placeholder="—"></div>
@@ -544,8 +601,8 @@ textarea.f{grid-column:1 / -1;font-family:var(--mono);font-size:12px;resize:vert
 
   <div class="card">
     <h2>Alertes et non-applicables</h2>
-    <p class="tiny muted" style="margin-bottom:12px;">Nombre d'alertes déclenchées, puis nombre de
-    sous-indicateurs cotés non applicables, par dimension.</p>
+    <p class="tiny muted" style="margin-bottom:12px;">Nombre d'alertes déclenchées, puis
+    nombre de sous-indicateurs cotés non applicables, par dimension.</p>
     <div class="form">
       <div class="frow"><label class="tiny muted"></label><span class="tiny muted">Alertes</span><span class="tiny muted">Non applicables</span><span></span></div>
       <div class="frow"><label>Santé</label><input class="f" type="number" min="0" step="1" id="a_sa" placeholder="—"><input class="f" type="number" min="0" step="1" id="n_sa" placeholder="—"><span class="tiny muted" style="align-self:center;">sur 32</span></div>
@@ -555,10 +612,23 @@ textarea.f{grid-column:1 / -1;font-family:var(--mono);font-size:12px;resize:vert
     </div>
   </div>
 
+  <div class="card">
+    <h2>Contrôle de la saisie</h2>
+    <p class="tiny muted" style="margin-bottom:12px;">Facultatif, mais recommandé.
+    Recopiez ici les quatre indices tels que le classeur les affiche. Un écart signale
+    une erreur de frappe dans les douze paramètres ci-dessus.</p>
+    <div class="form">
+      <div class="frow"><label class="tiny muted"></label><span class="tiny muted">Indice du classeur</span><span class="tiny muted">Vérification</span><span></span></div>
+      <div class="frow"><label>Santé</label><input class="f" type="number" min="0" max="100" step="0.01" id="v_sa" placeholder="—"><span class="ctl tiny" id="c_sa"></span><span></span></div>
+<div class="frow"><label>Sécurité</label><input class="f" type="number" min="0" max="100" step="0.01" id="v_se" placeholder="—"><span class="ctl tiny" id="c_se"></span><span></span></div>
+<div class="frow"><label>Environnement</label><input class="f" type="number" min="0" max="100" step="0.01" id="v_en" placeholder="—"><span class="ctl tiny" id="c_en"></span><span></span></div>
+<div class="frow"><label>Social</label><input class="f" type="number" min="0" max="100" step="0.01" id="v_so" placeholder="—"><span class="ctl tiny" id="c_so"></span><span></span></div>
+    </div>
+  </div>
+
   <div class="btnrow">
     <button class="btn btn--primary" type="button" id="b_add">Enregistrer la visite</button>
     <button class="btn" type="button" id="b_clearform">Vider le formulaire</button>
-    <button class="btn" type="button" id="b_demo">Charger un exemple</button>
   </div>
   <p class="tiny muted" id="msg" style="min-height:18px;"></p>
 
@@ -572,8 +642,9 @@ textarea.f{grid-column:1 / -1;font-family:var(--mono);font-size:12px;resize:vert
 
   <div class="card card--flat">
     <h2>Sauvegarde</h2>
-    <p class="tiny muted" style="margin-bottom:10px;">Le bloc ci-dessous contient toutes les visites
-    enregistrées. Copiez-le pour le conserver, ou collez-en un pour recharger des données.</p>
+    <p class="tiny muted" style="margin-bottom:10px;">Le bloc ci-dessous contient toutes
+    les visites enregistrées. Copiez-le pour le conserver, ou collez-en un pour
+    recharger des données.</p>
     <textarea id="json" class="f wide" rows="5" spellcheck="false"></textarea>
     <div class="btnrow">
       <button class="btn" type="button" id="b_copy">Copier</button>
@@ -593,16 +664,16 @@ textarea.f{grid-column:1 / -1;font-family:var(--mono);font-size:12px;resize:vert
 <section class="panel" id="v-calcul" role="tabpanel" hidden>
   <div class="eyebrow">Chaîne de calcul</div>
   <h1>Du sous-indicateur à l'indice</h1>
-  <p class="small muted">Le calcul est conduit par le classeur. Cette page en rappelle les étapes et
-  affiche les valeurs de la visite sélectionnée.</p>
+  <p class="small muted">Le calcul est conduit par le classeur. Cette page en rappelle
+  les étapes et affiche les valeurs de la visite sélectionnée.</p>
 
   <div class="card">
     <div class="chain">
-      <div><div class="chain__n">Sous-indicateur coté</div><div class="chain__s">131 lignes · binaire, maturité ou taux</div></div>
-      <div><div class="chain__n">Score normalisé</div><div class="chain__s">ramené de 0 à 100</div></div>
-      <div><div class="chain__n">Score d'indicateur</div><div class="chain__s">moyenne des sous-indicateurs applicables</div></div>
-      <div><div class="chain__n">Score de paramètre</div><div class="chain__s">moyenne des indicateurs</div></div>
-      <div><div class="chain__n">Indice de dimension</div><div class="chain__s">moyenne des trois paramètres</div></div>
+      <div class="chain__s"><div class="chain__n">Sous-indicateur coté</div><p class="small">131 lignes, en binaire, en maturité ou en taux.</p></div>
+      <div class="chain__s"><div class="chain__n">Score normalisé</div><p class="small">Ramené sur une échelle de 0 à 100, avec des bornes fixes.</p></div>
+      <div class="chain__s"><div class="chain__n">Score d'indicateur</div><p class="small">Moyenne des sous-indicateurs applicables. Les non-applicables sortent du dénominateur.</p></div>
+      <div class="chain__s"><div class="chain__n">Score de paramètre</div><p class="small">Moyenne des indicateurs du paramètre.</p></div>
+      <div class="chain__s"><div class="chain__n">Indice de dimension</div><p class="small">Moyenne des trois paramètres. Le calcul s'arrête là.</p></div>
     </div>
   </div>
 
@@ -613,10 +684,11 @@ textarea.f{grid-column:1 / -1;font-family:var(--mono);font-size:12px;resize:vert
 
   <div class="card card--flat">
     <h2>Ce que le calcul ne fait pas</h2>
-    <p class="small">Les quatre indices ne sont jamais réunis en une valeur unique. Aucune pondération
-    n'est introduite entre les paramètres ni entre les indicateurs. Les alertes sont signalées à part
-    et n'entrent pas dans le calcul. Les sous-indicateurs non applicables sont retirés du
-    dénominateur sans être comptés comme nuls.</p>
+    <p class="small">Les quatre indices ne sont jamais réunis en une valeur unique.
+    Aucune pondération n'est introduite entre les paramètres ni entre les indicateurs.
+    Les alertes sont signalées à part et n'entrent pas dans le calcul. Les
+    sous-indicateurs non applicables sont retirés du dénominateur sans être comptés
+    comme nuls.</p>
   </div>
 </section>
 
@@ -636,9 +708,9 @@ textarea.f{grid-column:1 / -1;font-family:var(--mono);font-size:12px;resize:vert
 
 <section class="panel" id="v-suivi" role="tabpanel" hidden>
   <div class="eyebrow">Suivi</div>
-  <h1>Historique des visites</h1>
-  <p class="small muted">Chaque visite enregistrée figure ici. La comparaison dans le temps suppose
-  au moins deux visites sur un même chantier.</p>
+  <h1>Évolution dans le temps</h1>
+  <p class="small muted">Chaque visite enregistrée figure ici. La comparaison suppose au
+  moins deux visites sur un même chantier.</p>
   <div id="u_body"></div>
 </section>
 
@@ -651,6 +723,8 @@ var PARS = ['Prévention','Protection','Conformité'];
 var PKEY = ['prv','prt','cnf'];
 var NSI  = {sa:32, se:36, en:32, so:31};
 var NIV  = ['Initial','Basique','Défini','Maîtrisé','Optimisé'];
+var SER  = ['#2a78d6','#eb6834','#1baf7a','#eda100'];
+var BAR  = ['#C0392B','#D97706','#C9A227','#4C9A5E','#2E7D4F'];
 
 var STORE = 'hse_plateforme_v1';
 var D = { visites: [] };
@@ -692,26 +766,43 @@ function ech(s) {
   return String(s === null || s === undefined ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-function val(id) {
-  var e = document.getElementById(id);
-  return e ? e.value.trim() : '';
-}
-function num(id) {
-  var v = val(id);
-  return v === '' ? null : Number(v.replace(',', '.'));
+function val(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+function num(id) { var v = val(id); return v === '' ? null : Number(v.replace(',', '.')); }
+
+/* ---------------------------------------------------- contrôle de saisie */
+function controler() {
+  KEYS.forEach(function (k) {
+    var c = document.getElementById('c_' + k);
+    if (!c) return;
+    var ref = num('v_' + k);
+    var s = 0, n = 0;
+    PKEY.forEach(function (p) {
+      var x = num('f_' + k + '_' + p);
+      if (x !== null && !isNaN(x)) { s += x; n++; }
+    });
+    if (ref === null || !n) { c.textContent = ''; c.className = 'ctl tiny'; return; }
+    var moy = s / n;
+    if (Math.abs(moy - ref) < 0.01) {
+      c.textContent = 'concorde'; c.className = 'ctl tiny ok';
+    } else {
+      c.textContent = 'écart ' + fmt(Math.abs(moy - ref)); c.className = 'ctl tiny ko';
+    }
+  });
 }
 
 /* ------------------------------------------------------------ formulaire */
 function videForm() {
-  ['f_code','f_nom','f_loc','f_nat','f_phase','f_date','f_eff','f_femmes','f_ent','f_obs']
+  ['f_code','f_nom','f_loc','f_nat','f_phase','f_date','f_eff','f_femmes','f_ent','f_obs','f_ver']
     .forEach(function (id) { var e = document.getElementById(id); if (e) e.value = ''; });
   KEYS.forEach(function (k) {
     PKEY.forEach(function (p) {
       var e = document.getElementById('f_' + k + '_' + p); if (e) e.value = '';
     });
-    var a = document.getElementById('a_' + k); if (a) a.value = '';
-    var n = document.getElementById('n_' + k); if (n) n.value = '';
+    ['a_', 'n_', 'v_'].forEach(function (pre) {
+      var e = document.getElementById(pre + k); if (e) e.value = '';
+    });
   });
+  controler();
   message('');
 }
 function message(t, ok) {
@@ -726,7 +817,7 @@ function ajouter() {
   var vis = {
     code: code, nom: val('f_nom'), loc: val('f_loc'), nat: val('f_nat'),
     phase: val('f_phase'), date: val('f_date'), eff: num('f_eff'),
-    femmes: num('f_femmes'), ent: val('f_ent'), obs: val('f_obs'),
+    femmes: num('f_femmes'), ent: val('f_ent'), obs: val('f_obs'), ver: val('f_ver'),
     par: {}, alertes: {}, na: {}
   };
   var vide = true;
@@ -748,25 +839,89 @@ function ajouter() {
   videForm();
   message('Visite ' + code + ' enregistrée.', true);
 }
-function exemple() {
-  document.getElementById('f_code').value = 'CIIEL';
-  document.getElementById('f_nom').value = "Centre d'Identification Immigration-Émigration et Élection";
-  document.getElementById('f_loc').value = 'Akpakpa, Cotonou';
-  document.getElementById('f_nat').value = 'Bâtiment';
-  document.getElementById('f_phase').value = 'Gros œuvre';
-  document.getElementById('f_date').value = '2026-09-17';
-  document.getElementById('f_eff').value = '140';
-  document.getElementById('f_femmes').value = '1';
-  document.getElementById('f_obs').value = 'SODJI Ange-Marie';
-  var v = { sa:[54.46,58.33,75.69], se:[100,94.44,75], en:[87.80,75,95.83], so:[87.50,88.89,69.44] };
-  var a = { sa:8, se:3, en:3, so:5 };
-  var n = { sa:3, se:4, en:2, so:4 };
-  KEYS.forEach(function (k) {
-    PKEY.forEach(function (p, i) { document.getElementById('f_' + k + '_' + p).value = v[k][i]; });
-    document.getElementById('a_' + k).value = a[k];
-    document.getElementById('n_' + k).value = n[k];
+
+/* ------------------------------------------------------------- graphiques */
+function histo(v) {
+  var W = 720, H = 300, ml = 34, mr = 8, mt = 12, mb = 58;
+  var iw = W - ml - mr, ih = H - mt - mb;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Scores des douze paramètres">';
+  [0, 25, 50, 75, 100].forEach(function (g) {
+    var y = mt + ih - (g / 100) * ih;
+    s += '<line x1="' + ml + '" y1="' + y + '" x2="' + (W - mr) + '" y2="' + y +
+      '" stroke="#E3DCD1" stroke-width="1"/>' +
+      '<text x="' + (ml - 7) + '" y="' + (y + 4) + '" text-anchor="end" font-size="11" ' +
+      'fill="#6B7572" font-family="ui-monospace,monospace">' + g + '</text>';
   });
-  message('Exemple chargé — ajustez puis enregistrez.', true);
+  var gw = iw / 4, bw = Math.min(30, (gw - 22) / 3);
+  KEYS.forEach(function (k, j) {
+    var x0 = ml + j * gw + (gw - 3 * bw - 12) / 2;
+    PKEY.forEach(function (p, i) {
+      var x = num0(v.par[k][p]);
+      var h = isNaN(x) ? 0 : (x / 100) * ih;
+      var bx = x0 + i * (bw + 6);
+      s += '<rect x="' + bx + '" y="' + (mt + ih - h) + '" width="' + bw + '" height="' +
+        Math.max(h, 1) + '" rx="3" fill="' + BAR[Math.max(niveau(x) - 1, 0)] + '"/>';
+      if (!isNaN(x)) {
+        s += '<text x="' + (bx + bw / 2) + '" y="' + (mt + ih - h - 5) +
+          '" text-anchor="middle" font-size="10.5" fill="#3D4643" ' +
+          'font-family="ui-monospace,monospace">' + Math.round(x) + '</text>';
+      }
+      s += '<text x="' + (bx + bw / 2) + '" y="' + (mt + ih + 14) +
+        '" text-anchor="middle" font-size="10" fill="#6B7572">' +
+        ['Prév', 'Prot', 'Conf'][i] + '</text>';
+    });
+    s += '<text x="' + (ml + j * gw + gw / 2) + '" y="' + (mt + ih + 34) +
+      '" text-anchor="middle" font-size="12" font-weight="600" fill="#16211F">' +
+      DIMS[j] + '</text>';
+  });
+  s += '<line x1="' + ml + '" y1="' + (mt + ih) + '" x2="' + (W - mr) + '" y2="' +
+    (mt + ih) + '" stroke="#CFC7B6" stroke-width="1.5"/></svg>';
+  return s;
+}
+function num0(x) { return (x === null || x === undefined || x === '') ? NaN : Number(x); }
+
+function courbes() {
+  var n = D.visites.length;
+  var W = 720, H = 300, ml = 34, mr = 12, mt = 14, mb = 54;
+  var iw = W - ml - mr, ih = H - mt - mb;
+  var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Évolution des quatre indices">';
+  [0, 25, 50, 75, 100].forEach(function (g) {
+    var y = mt + ih - (g / 100) * ih;
+    s += '<line x1="' + ml + '" y1="' + y + '" x2="' + (W - mr) + '" y2="' + y +
+      '" stroke="#E3DCD1" stroke-width="1"/>' +
+      '<text x="' + (ml - 7) + '" y="' + (y + 4) + '" text-anchor="end" font-size="11" ' +
+      'fill="#6B7572" font-family="ui-monospace,monospace">' + g + '</text>';
+  });
+  var px = function (i) { return n === 1 ? ml + iw / 2 : ml + (i / (n - 1)) * iw; };
+  var py = function (v) { return mt + ih - (v / 100) * ih; };
+  KEYS.forEach(function (k, j) {
+    var pts = [];
+    D.visites.forEach(function (v, i) {
+      var x = indice(v, k);
+      if (!isNaN(x)) pts.push([px(i), py(x)]);
+    });
+    if (pts.length > 1) {
+      s += '<polyline fill="none" stroke="' + SER[j] + '" stroke-width="2" ' +
+        'stroke-linecap="round" stroke-linejoin="round" points="' +
+        pts.map(function (p) { return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' ') +
+        '"/>';
+    }
+    pts.forEach(function (p) {
+      s += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) +
+        '" r="4.5" fill="' + SER[j] + '" stroke="#FFFFFF" stroke-width="2"/>';
+    });
+  });
+  D.visites.forEach(function (v, i) {
+    s += '<text x="' + px(i) + '" y="' + (mt + ih + 18) + '" text-anchor="middle" ' +
+      'font-size="11" fill="#3D4643">' + ech(v.code || '—') + '</text>';
+    if (v.date) {
+      s += '<text x="' + px(i) + '" y="' + (mt + ih + 33) + '" text-anchor="middle" ' +
+        'font-size="10" fill="#6B7572">' + ech(v.date) + '</text>';
+    }
+  });
+  s += '<line x1="' + ml + '" y1="' + (mt + ih) + '" x2="' + (W - mr) + '" y2="' +
+    (mt + ih) + '" stroke="#CFC7B6" stroke-width="1.5"/></svg>';
+  return s;
 }
 
 /* ------------------------------------------------------------------ rendu */
@@ -817,15 +972,18 @@ function rendreSaisie() {
   document.getElementById('s_sub').textContent =
     [v.code, v.date, v.loc].filter(Boolean).join(' · ');
   var ligne = function (k, x) {
-    return '<div class="vrow"><span class="tiny muted">' + k + '</span><span>' + ech(x || '—') + '</span></div>';
+    return '<div class="vrow"><span class="tiny muted">' + k + '</span><span>' +
+      ech(x || '—') + '</span></div>';
   };
   document.getElementById('s_body').innerHTML =
     '<div class="card">' +
     ligne('Code du chantier', v.code) + ligne('Intitulé', v.nom) +
     ligne('Localisation', v.loc) + ligne("Nature de l'ouvrage", v.nat) +
     ligne("Phase d'avancement", v.phase) + ligne('Date de visite', v.date) +
-    ligne('Effectif présent', v.eff === null ? '' : v.eff + (v.femmes !== null ? ' dont ' + v.femmes + ' femme(s)' : '')) +
+    ligne('Effectif présent', v.eff === null ? '' : v.eff +
+      (v.femmes !== null && v.femmes !== undefined ? ' dont ' + v.femmes + ' femme(s)' : '')) +
     ligne('Entreprise exécutante', v.ent) + ligne('Évaluateur', v.obs) +
+    ligne('Version du classeur', v.ver) +
     '</div>';
 }
 
@@ -833,15 +991,21 @@ function rendreCalcul() {
   var v = D.visites[actif];
   if (!v) { vide('c_body', 'Aucune visite sélectionnée.'); return; }
   var h = '<div class="matrix"><span></span><span class="h">Prév.</span><span class="h">Prot.</span>' +
-          '<span class="h">Conf.</span><span class="h">Indice</span>';
+          '<span class="h">Conf.</span>';
   KEYS.forEach(function (k, j) {
     h += '<span class="r">' + DIMS[j] + '</span>';
     PKEY.forEach(function (p) {
       var x = v.par[k][p];
-      h += '<span class="c p' + niveau(x) + '">' + fmt(x) + '</span>';
+      h += '<span class="c p' + niveau(num0(x)) + '">' + fmt(x) + '</span>';
     });
-    var id = indice(v, k);
-    h += '<span class="c p' + niveau(id) + '"><strong>' + fmt(id) + '</strong></span>';
+  });
+  h += '</div><div class="grid4" style="margin-top:14px;">';
+  KEYS.forEach(function (k, j) {
+    var id = indice(v, k), n = niveau(id);
+    h += '<div class="idx"><div class="idx__bar" style="background:var(--n' + n +
+      '-bar);"></div><div class="idx__body"><div class="idx__name">' + DIMS[j] +
+      '</div><div class="idx__val">' + fmt(id) + '</div><span class="pill p' + n + '">' +
+      (n ? NIV[n - 1] : '—') + '</span></div></div>';
   });
   h += '</div>';
   document.getElementById('c_body').innerHTML = h;
@@ -863,8 +1027,12 @@ function rendreRapport() {
   if (v.loc) sub.push(v.loc);
   if (v.nat) sub.push(v.nat);
   if (v.phase) sub.push(v.phase);
-  if (v.eff !== null) sub.push(v.eff + ' travailleurs présents' + (v.femmes !== null ? ' dont ' + v.femmes + ' femme(s)' : ''));
+  if (v.eff !== null && v.eff !== undefined) {
+    sub.push(v.eff + ' travailleurs présents' +
+      (v.femmes !== null && v.femmes !== undefined ? ' dont ' + v.femmes + ' femme(s)' : ''));
+  }
   if (v.obs) sub.push('évaluateur : ' + v.obs);
+  if (v.ver) sub.push('classeur ' + v.ver);
   document.getElementById('r_sub').textContent = sub.join(' · ');
 
   var tA = 0, tN = 0, tC = 0;
@@ -880,9 +1048,9 @@ function rendreRapport() {
       'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ' +
       'aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/>' +
       '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>' +
-      '<span><strong>' + tA + (tA > 1 ? ' alertes' : ' alerte') + '</strong> — sous-indicateurs cotés au ' +
-      "niveau le plus bas. Elles sont signalées à part et n'entrent pas dans le calcul des indices." +
-      '</span></div>';
+      '<span><strong>' + tA + (tA > 1 ? ' alertes' : ' alerte') + '</strong> — sous-indicateurs ' +
+      "cotés au niveau le plus bas. Elles sont signalées à part et n'entrent pas dans le " +
+      'calcul des indices.</span></div>';
   }
 
   h += '<div class="grid4" style="margin-bottom:14px;">';
@@ -898,30 +1066,33 @@ function rendreRapport() {
   });
   h += '</div>';
 
-  h += '<div class="card"><h2>Décomposition par paramètre</h2>' +
-    '<p class="tiny muted" style="margin-bottom:14px;">Prévention : empêcher le risque · ' +
-    "Protection : en limiter l'impact · Conformité : la règle et sa trace</p>" +
-    '<div class="matrix"><span></span><span class="h">Prév.</span><span class="h">Prot.</span><span class="h">Conf.</span>';
+  h += '<div class="card"><h2>Les douze paramètres</h2>' +
+    '<p class="tiny muted" style="margin-bottom:12px;">Chaque barre porte la couleur de ' +
+    "son niveau sur l'échelle de lecture.</p><div class=\"chartwrap\">" + histo(v) +
+    '</div><div class="legend">' +
+    '<span><span class="sw" style="background:var(--n1-bar);"></span>Initial · 0 à 20</span>' +
+    '<span><span class="sw" style="background:var(--n2-bar);"></span>Basique · 20 à 40</span>' +
+    '<span><span class="sw" style="background:var(--n3-bar);"></span>Défini · 40 à 60</span>' +
+    '<span><span class="sw" style="background:var(--n4-bar);"></span>Maîtrisé · 60 à 80</span>' +
+    '<span><span class="sw" style="background:var(--n5-bar);"></span>Optimisé · 80 à 100</span>' +
+    '</div></div>';
+
+  h += '<div class="card"><h2>Décomposition par paramètre</h2><div class="matrix">' +
+    '<span></span><span class="h">Prév.</span><span class="h">Prot.</span><span class="h">Conf.</span>';
   KEYS.forEach(function (k, j) {
     h += '<span class="r">' + DIMS[j] + '</span>';
     PKEY.forEach(function (p) {
       var x = v.par[k][p];
-      h += '<span class="c p' + niveau(x) + '">' + fmt(x) + '</span>';
+      h += '<span class="c p' + niveau(num0(x)) + '">' + fmt(x) + '</span>';
     });
   });
-  h += '</div><div class="legend">' +
-    '<span><span class="sw" style="background:var(--n1-bg);"></span>Initial · 0 à 20</span>' +
-    '<span><span class="sw" style="background:var(--n2-bg);"></span>Basique · 20 à 40</span>' +
-    '<span><span class="sw" style="background:var(--n3-bg);"></span>Défini · 40 à 60</span>' +
-    '<span><span class="sw" style="background:var(--n4-bg);"></span>Maîtrisé · 60 à 80</span>' +
-    '<span><span class="sw" style="background:var(--n5-bg);"></span>Optimisé · 80 à 100</span>' +
-    '</div><div class="btnrow"><button class="btn" type="button" data-go="detail" ' +
+  h += '</div><div class="btnrow"><button class="btn" type="button" data-go="detail" ' +
     'style="width:100%;">Détail par dimension</button></div></div>';
 
   h += '<div class="card card--flat"><h2>Base de calcul</h2><p class="small">' +
     tC + ' sous-indicateurs cotés sur 131 · ' + tN + ' non applicables · ' + tA +
-    " alertes. Un indice calculé sur une base réduite ne se lit pas comme un indice calculé sur la " +
-    'base entière.</p></div>';
+    " alertes. Un indice calculé sur une base réduite ne se lit pas comme un indice " +
+    'calculé sur la base entière.</p></div>';
 
   document.getElementById('r_body').innerHTML = h;
   [].slice.call(document.querySelectorAll('#r_body [data-go]')).forEach(function (b) {
@@ -933,7 +1104,8 @@ function rendreDetail() {
   var v = D.visites[actif];
   var sel = document.getElementById('dimsel');
   sel.innerHTML = DIMS.map(function (d, i) {
-    return '<button class="fbtn' + (i === dimActive ? ' is-on' : '') + '" type="button" data-dim="' + i + '">' + d + '</button>';
+    return '<button class="fbtn" type="button" aria-pressed="' + (i === dimActive) +
+      '" data-dim="' + i + '">' + d + '</button>';
   }).join('');
   [].slice.call(sel.querySelectorAll('[data-dim]')).forEach(function (b) {
     b.addEventListener('click', function () {
@@ -948,31 +1120,46 @@ function rendreDetail() {
   var k = KEYS[dimActive];
   document.getElementById('d_titre').textContent = DIMS[dimActive] + ' — ' + (v.code || '');
   var id = indice(v, k), n = niveau(id);
-  var h = '<div class="card"><div class="idx"><div class="idx__bar" style="background:var(--n' + n +
-    '-bar);"></div><div class="idx__body"><div class="idx__name">Indice ' + DIMS[dimActive] +
-    '</div><div class="idx__val">' + fmt(id) + '</div><span class="pill p' + n + '">' +
-    (n ? NIV[n - 1] : '—') + '</span><div class="idx__meta">' +
-    (NSI[k] - Number(v.na[k] || 0)) + ' cotés · ' + Number(v.na[k] || 0) + ' NA · ' +
-    Number(v.alertes[k] || 0) + ' alertes</div></div></div></div>';
-  h += '<div class="card"><h2>Les trois paramètres</h2><div class="matrix">' +
-    '<span></span><span class="h">Score</span><span class="h">Niveau</span>';
+  var h = '<div class="card"><div class="idx"><div class="idx__bar" style="background:var(--n' +
+    n + '-bar);"></div><div class="idx__body"><div class="idx__name">Indice ' +
+    DIMS[dimActive] + '</div><div class="idx__val">' + fmt(id) +
+    '</div><span class="pill p' + n + '">' + (n ? NIV[n - 1] : '—') +
+    '</span><div class="idx__meta">' + (NSI[k] - Number(v.na[k] || 0)) + ' cotés · ' +
+    Number(v.na[k] || 0) + ' NA · ' + Number(v.alertes[k] || 0) +
+    ' alertes</div></div></div></div>';
+  h += '<div class="card"><h2>Les trois paramètres</h2><div class="lines">';
   PKEY.forEach(function (p, i) {
-    var x = v.par[k][p], nn = niveau(x);
-    h += '<span class="r">' + PARS[i] + '</span><span class="c p' + nn + '">' + fmt(x) +
-      '</span><span class="c">' + (nn ? NIV[nn - 1] : '—') + '</span>';
+    var x = num0(v.par[k][p]), nn = niveau(x);
+    h += '<div><span class="nm">' + PARS[i] + '</span><span class="bar"><span style="width:' +
+      (isNaN(x) ? 0 : x) + '%;background:var(--n' + Math.max(nn, 1) +
+      '-bar);"></span></span><span class="vl">' + fmt(x) + '</span></div>';
   });
   h += '</div></div>';
-  h += '<div class="card card--flat"><h2>Règle appliquée</h2><p class="small">Le score du paramètre ' +
-    "est la moyenne des indicateurs qui le composent, et l'indice de la dimension la moyenne de ses " +
-    'trois paramètres. Les sous-indicateurs non applicables sont retirés du dénominateur.</p></div>';
+  h += '<div class="card card--flat"><h2>Règle appliquée</h2><p class="small">Le score du ' +
+    "paramètre est la moyenne des indicateurs qui le composent, et l'indice de la " +
+    'dimension la moyenne de ses trois paramètres. Les sous-indicateurs non applicables ' +
+    'sont retirés du dénominateur.</p></div>';
   document.getElementById('d_body').innerHTML = h;
 }
 
 function rendreSuivi() {
   if (!D.visites.length) { vide('u_body', 'Aucune visite enregistrée.'); return; }
-  var h = '<div class="card"><div class="tablebox"><table class="t"><thead><tr>' +
-    '<th>Chantier</th><th>Date</th><th>Phase</th><th>Santé</th><th>Sécurité</th>' +
-    '<th>Environ.</th><th>Social</th><th>Alertes</th><th>NA</th></tr></thead><tbody>';
+  var h = '<div class="card"><h2>Évolution des quatre indices</h2>';
+  if (D.visites.length === 1) {
+    h += '<p class="tiny muted" style="margin-bottom:12px;">Une seule visite : le ' +
+      "graphique affiche un point par dimension. Une seconde visite dessinera l'évolution." +
+      '</p>';
+  }
+  h += '<div class="chartwrap">' + courbes() + '</div><div class="ckey">';
+  DIMS.forEach(function (d, j) {
+    h += '<span><i style="background:' + SER[j] + ';"></i>' + d + '</span>';
+  });
+  h += '</div></div>';
+
+  h += '<div class="card"><h2>Historique des visites</h2><div class="tablebox">' +
+    '<table><thead><tr><th>Chantier</th><th>Date</th><th>Phase</th><th>Santé</th>' +
+    '<th>Sécurité</th><th>Environ.</th><th>Social</th><th>Alertes</th><th>NA</th>' +
+    '</tr></thead><tbody>';
   D.visites.forEach(function (v) {
     var tA = 0, tN = 0;
     KEYS.forEach(function (k) { tA += Number(v.alertes[k] || 0); tN += Number(v.na[k] || 0); });
@@ -1032,29 +1219,32 @@ document.getElementById('back').addEventListener('click', function () {
 function rendreRegles() {
   var box = document.getElementById('rules');
   if (!box) return;
-  var q = (document.getElementById('q') || {}).value || '';
-  q = q.toLowerCase();
+  var qe = document.getElementById('q');
+  var q = (qe ? qe.value : '').toLowerCase();
   var f = box.getAttribute('data-dim') || '';
-  var out = '';
+  var out = '', n = 0;
   REGLES.forEach(function (r) {
     if (f && r[0].indexOf(f) !== 0) return;
     if (q && (r[0] + ' ' + r[1] + ' ' + r[3]).toLowerCase().indexOf(q) < 0) return;
+    n++;
     out += '<div class="rule"><div class="rule__h"><span class="code">' + ech(r[0]) +
       '</span><span class="tag">' + ech(r[2]) + '</span></div><div class="rule__t">' +
       ech(r[1]) + '</div><div class="rule__r">' + ech(r[3]) + '</div>' +
       '<div class="rule__na">Non applicable : ' + ech(r[4]) + '</div></div>';
   });
   box.innerHTML = out || '<div class="empty">Aucune règle ne correspond.</div>';
+  var c = document.getElementById('count');
+  if (c) c.textContent = n;
 }
 var qi = document.getElementById('q');
 if (qi) { qi.addEventListener('input', rendreRegles); }
 [].slice.call(document.querySelectorAll('#dimfilters .fbtn')).forEach(function (b) {
   b.addEventListener('click', function () {
     [].slice.call(document.querySelectorAll('#dimfilters .fbtn')).forEach(function (o) {
-      o.classList.remove('is-on');
+      o.setAttribute('aria-pressed', 'false');
     });
-    b.classList.add('is-on');
-    document.getElementById('rules').setAttribute('data-dim', b.getAttribute('data-f') || '');
+    b.setAttribute('aria-pressed', 'true');
+    document.getElementById('rules').setAttribute('data-dim', b.getAttribute('data-dim') || '');
     rendreRegles();
   });
 });
@@ -1062,7 +1252,12 @@ if (qi) { qi.addEventListener('input', rendreRegles); }
 /* ----------------------------------------------------------------- boutons */
 document.getElementById('b_add').addEventListener('click', ajouter);
 document.getElementById('b_clearform').addEventListener('click', videForm);
-document.getElementById('b_demo').addEventListener('click', exemple);
+KEYS.forEach(function (k) {
+  ['v_' + k, 'f_' + k + '_prv', 'f_' + k + '_prt', 'f_' + k + '_cnf'].forEach(function (id) {
+    var e = document.getElementById(id);
+    if (e) e.addEventListener('input', controler);
+  });
+});
 document.getElementById('b_reset').addEventListener('click', function () {
   D = { visites: [] }; actif = -1; ecrire(); rendre();
   message('Toutes les visites ont été effacées.', true);
@@ -1079,7 +1274,7 @@ document.getElementById('b_load').addEventListener('click', function () {
     if (!o || !o.visites) throw 0;
     D = o; actif = D.visites.length ? 0 : -1; ecrire(); rendre();
     message(D.visites.length + ' visite(s) chargée(s).', true);
-  } catch (e) { message('Le bloc collé n\'est pas lisible.'); }
+  } catch (e) { message("Le bloc collé n'est pas lisible."); }
 });
 
 /* -------------------------------------------------------------- démarrage */
@@ -1089,7 +1284,9 @@ panneaux.forEach(function (p) { p.hidden = true; });
 couverture();
 rendreRegles();
 rendre();
+controler();
 
 </script>
+</div>
 </body>
 </html>
