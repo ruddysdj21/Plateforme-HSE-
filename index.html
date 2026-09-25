@@ -79,14 +79,14 @@
   /* ---- couverture ---- */
   body.is-cover .topbar,
   body.is-cover .wrap { display: none; }
-  .cover { display: none; background: linear-gradient(180deg,#F7EFE0 0%,#F0F1E9 38%,#E4EDE8 100%); min-height: 100vh; min-height: 100dvh; flex-direction: column; }
+  .cover { display: none; background: #000000; min-height: 100vh; min-height: 100dvh; flex-direction: column; }
   .cover.is-on { display: flex; }
   .cover__top { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 24px 0 24px; }
-  .cover__mark { font-family: var(--display); font-size: 46px; font-weight: 600; letter-spacing: 0.1em; color: var(--accent); line-height: 1; }
-  .cover__sub { margin-top: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #A2571A; }
+  .cover__mark { font-family: var(--display); font-size: 46px; font-weight: 600; letter-spacing: 0.1em; color: #F7F4EE; line-height: 1; }
+  .cover__sub { margin-top: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #C8B08C; }
   .cover__go { display: flex; justify-content: center; padding: 0 0 6px 0; }
-  .arrowbtn { appearance: none; border: 0; background: var(--accent); color: #F7F4EE; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 18px rgba(22, 33, 31, 0.22); }
-  .arrowbtn:hover { background: #0A4541; }
+  .arrowbtn { appearance: none; border: 0; background: #F7F4EE; color: #16211F; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 18px rgba(22, 33, 31, 0.22); }
+  .arrowbtn:hover { background: #E4EDE8; }
   .cover__art { line-height: 0; }
   .cover__art svg { display: block; width: 100%; height: auto; }
 
@@ -256,11 +256,11 @@
   </div>
   <div class="cover__art">
 <svg viewBox="0 0 960 400" role="img" aria-label="Illustration d'un chantier de construction : grue, bâtiment en cours, palissade, camion-citerne et travailleurs">
-      <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E4EDE8"/><stop offset="1" stop-color="#F3E7D4"/></linearGradient></defs><rect x="0" y="0" width="960" height="400" fill="url(#sky)"/>
-      <circle cx="812" cy="86" r="74" fill="#F7DFB4" opacity="0.55"/><circle cx="812" cy="86" r="42" fill="#F2C97C"/>
+      <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000000"/><stop offset="1" stop-color="#0E1512"/></linearGradient><radialGradient id="glow"><stop offset="0" stop-color="#F2C97C" stop-opacity="0.34"/><stop offset="1" stop-color="#F2C97C" stop-opacity="0"/></radialGradient></defs><rect x="0" y="0" width="960" height="400" fill="url(#sky)"/>
+      <circle cx="812" cy="86" r="84" fill="url(#glow)"/><circle cx="812" cy="86" r="42" fill="#F2C97C"/>
 
       <!-- arriere-plan : ville -->
-      <g fill="#C3D3CD">
+      <g fill="#2C3A38">
         <rect x="24" y="196" width="66" height="124"/>
         <rect x="100" y="164" width="52" height="156"/>
         <rect x="162" y="212" width="74" height="108"/>
@@ -415,6 +415,10 @@
       <span class="tile__ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
       <span class="tile__n">Détail</span>
     </button>
+    <a class="tile tile--dl" href="OUTIL_HSE.xlsx" download>
+      <span class="tile__ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m8 11 4 4 4-4"/><path d="M20 15v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4"/></svg></span>
+      <span class="tile__n">Classeur</span>
+    </a>
   </div>
 
 
@@ -538,6 +542,9 @@ textarea.f{grid-column:1 / -1;font-family:var(--mono);font-size:12px;resize:vert
 .tile:nth-child(7){--tc:#2E7D4F;--ts:#E5F0E4;}
 .tile:hover{background:var(--ts);border-color:var(--line);border-top-color:var(--tc);}
 .tile__n{color:var(--tc);}
+.tile--dl{--tc:#333B39;--ts:#EAEDEC;text-decoration:none;color:inherit;}
+.tile--dl .tile__ic{background:#EAEDEC;color:#333B39;}
+body.is-cover{background:#000000;}
 
 .panel{--pc:#0E5E58;--ps:#E6F1EF;--pl:#C9DCD8;}
 #v-import,#v-saisie{--pc:#1F5C9E;--ps:#E3EDF9;--pl:#C6D9EE;}
