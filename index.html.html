@@ -1,0 +1,1095 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plateforme HSE</title>
+<style>
+  :root {
+    --ground: #F7F4EE;
+    --surface: #FFFFFF;
+    --ink: #16211F;
+    --muted: #6B7572;
+    --body: #3D4643;
+    --line: #E3DCD1;
+    --line-soft: #F0EBE2;
+    --accent: #0E5E58;
+    --accent-soft: #F2F8F7;
+    --accent-line: #C9DCD8;
+    --clay: #C46A1F;
+    --dark: #16211F;
+    --dark-2: #2F4340;
+    --dark-text: #D7E2DF;
+    --alert-bg: #FCEDEE;
+    --alert-line: #F0CDD1;
+    --alert-ink: #7E1420;
+    --alert-strong: #A3212F;
+    --n1-bg: #F8D7DA; --n1-ink: #7E1420; --n1-bar: #C0392B;
+    --n2-bg: #FAE0C6; --n2-ink: #7E4410; --n2-bar: #D97706;
+    --n3-bg: #FAF0C8; --n3-ink: #6E5806; --n3-bar: #C9A227;
+    --n4-bg: #DCEFDC; --n4-ink: #1E5A2D; --n4-bar: #4C9A5E;
+    --n5-bg: #C4E2C2; --n5-ink: #14502A; --n5-bar: #2E7D4F;
+    --mono: ui-monospace, "SFMono-Regular", "Menlo", "Consolas", monospace;
+    --display: Georgia, "Times New Roman", serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 15px; line-height: 1.5; -webkit-text-size-adjust: 100%;
+  }
+  a { color: var(--accent); }
+
+  .topbar { background: var(--dark); color: var(--ground); padding: 11px 14px; position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 12px; }
+  .backbtn { display: flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 13px 0 10px; border-radius: 8px; border: 1px solid #3C514D; background: transparent; color: var(--dark-text); font: inherit; font-size: 13.5px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+  .backbtn:hover { background: var(--dark-2); color: #FFFFFF; }
+  .ptitle { flex-grow: 1; font-family: var(--display); font-size: 19px; font-weight: 600; letter-spacing: 0.02em; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; background: var(--dark-2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+
+  .tabs { display: flex; gap: 2px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { appearance: none; border: 0; background: transparent; color: var(--dark-text); font: inherit; font-size: 13.5px; padding: 11px 12px; border-bottom: 3px solid transparent; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
+  .tab[aria-selected="true"] { color: #FFFFFF; font-weight: 600; border-bottom-color: #7FB7A8; }
+
+  .wrap { padding: 20px 16px 48px 16px; max-width: 1180px; margin: 0 auto; }
+  .panel[hidden] { display: none; }
+
+  h1 { font-family: var(--display); font-size: 27px; line-height: 1.15; font-weight: 600; margin: 0 0 10px 0; }
+  h2 { font-size: 16px; font-weight: 600; margin: 0 0 12px 0; }
+  h3 { font-size: 14px; font-weight: 600; margin: 0 0 6px 0; }
+  p { margin: 0 0 12px 0; color: var(--body); }
+  p:last-child { margin-bottom: 0; }
+
+  .eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .code { font-family: var(--mono); font-size: 12px; }
+  .muted { color: var(--muted); }
+  .small { font-size: 13px; }
+  .tiny { font-size: 12px; }
+  .num { font-family: var(--mono); }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin-bottom: 14px; }
+  .card--flat { background: #EFEBE1; border-color: transparent; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 46px; padding: 0 18px; border-radius: 8px; font: inherit; font-size: 14.5px; font-weight: 600; text-decoration: none; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; }
+  .btn--primary { background: var(--accent); border-color: var(--accent); color: #FFFFFF; }
+  .btnrow { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 0 0; }
+
+  /* ---- couverture ---- */
+  body.is-cover .topbar,
+  body.is-cover .wrap { display: none; }
+  .cover { display: none; background: #EBF0ED; min-height: 100vh; min-height: 100dvh; flex-direction: column; }
+  .cover.is-on { display: flex; }
+  .cover__top { flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 24px 0 24px; }
+  .cover__mark { font-family: var(--display); font-size: 46px; font-weight: 600; letter-spacing: 0.1em; color: var(--ink); line-height: 1; }
+  .cover__sub { margin-top: 12px; font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #5E7670; }
+  .cover__go { display: flex; justify-content: center; padding: 0 0 6px 0; }
+  .arrowbtn { appearance: none; border: 0; background: var(--ink); color: #F7F4EE; width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 6px 18px rgba(22, 33, 31, 0.22); }
+  .arrowbtn:hover { background: var(--accent); }
+  .cover__art { line-height: 0; }
+  .cover__art svg { display: block; width: 100%; height: auto; }
+
+  /* ---- tuiles ---- */
+  .tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .tile { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 128px; text-align: center; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px 14px; font: inherit; color: inherit; cursor: pointer; }
+  .tile:hover { border-color: var(--accent-line); background: var(--accent-soft); }
+  .tile__ic { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); }
+  .tile__n { font-size: 15px; font-weight: 600; }
+
+  .alertbar { display: flex; align-items: flex-start; gap: 10px; background: var(--alert-bg); border: 1px solid var(--alert-line); border-radius: 10px; padding: 13px 14px; margin-bottom: 14px; color: var(--alert-ink); font-size: 13.5px; }
+  .alertbar svg { flex-shrink: 0; margin-top: 1px; }
+
+  .grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .grid4 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+
+  .idx { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .idx__bar { height: 5px; }
+  .idx__body { padding: 14px 15px 15px 15px; }
+  .idx__name { font-size: 12.5px; font-weight: 600; color: var(--muted); margin-bottom: 8px; }
+  .idx__val { font-family: var(--mono); font-size: 30px; font-weight: 600; line-height: 1; margin-bottom: 10px; }
+  .idx__meta { margin-top: 11px; font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600; }
+  .p1 { background: var(--n1-bg); color: var(--n1-ink); }
+  .p2 { background: var(--n2-bg); color: var(--n2-ink); }
+  .p3 { background: var(--n3-bg); color: var(--n3-ink); }
+  .p4 { background: var(--n4-bg); color: var(--n4-ink); }
+  .p5 { background: var(--n5-bg); color: var(--n5-ink); }
+  .tag { display: inline-block; padding: 3px 8px; border-radius: 5px; font-size: 11px; font-weight: 600; background: #EFEBE1; color: var(--body); }
+
+  .bar { height: 8px; border-radius: 4px; background: #EDE8DE; overflow: hidden; }
+  .bar > span { display: block; height: 100%; border-radius: 4px; }
+
+  .lines > div { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; }
+  .lines > div:last-child { margin-bottom: 0; }
+  .lines .nm { width: 96px; font-size: 13px; color: var(--body); flex-shrink: 0; }
+  .lines .vl { font-family: var(--mono); width: 44px; font-size: 14px; font-weight: 600; text-align: right; flex-shrink: 0; }
+  .lines .bar { flex-grow: 1; }
+
+  .matrix { display: grid; grid-template-columns: 96px repeat(3, minmax(0, 1fr)); gap: 7px; align-items: center; }
+  .matrix .h { font-size: 11px; font-weight: 700; color: var(--muted); text-align: center; text-transform: uppercase; letter-spacing: 0.04em; }
+  .matrix .r { font-size: 12.5px; font-weight: 600; }
+  .matrix .c { padding: 12px 4px; border-radius: 7px; text-align: center; font-family: var(--mono); font-size: 16px; font-weight: 600; }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 16px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line-soft); }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; color: var(--body); }
+  .sw { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; }
+
+  .rowlist > div { padding: 12px 0; border-bottom: 1px solid var(--line-soft); }
+  .rowlist > div:last-child { border-bottom: 0; padding-bottom: 0; }
+  .rowlist > div:first-child { padding-top: 0; }
+  .rowhead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+  .rowhead .code { color: var(--muted); }
+  .rowhead .score { font-family: var(--mono); font-size: 13.5px; font-weight: 600; }
+  .rowtext { font-size: 13px; line-height: 1.45; color: var(--body); }
+  .is-alert .code, .is-alert .score { color: var(--alert-strong); }
+
+  .ind { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border: 1px solid var(--line-soft); border-radius: 8px; margin-bottom: 6px; }
+  .ind--open { background: var(--accent-soft); border-color: var(--accent-line); }
+  .ind .c { font-family: var(--mono); font-size: 12px; color: var(--muted); width: 74px; flex-shrink: 0; }
+  .ind--open .c { color: var(--accent); }
+  .ind .t { flex-grow: 1; font-size: 13px; line-height: 1.35; }
+  .ind .b { width: 64px; flex-shrink: 0; }
+  .ind .v { font-family: var(--mono); font-size: 14px; font-weight: 600; width: 42px; text-align: right; flex-shrink: 0; }
+
+  .sub { margin: 4px 0 10px 0; padding-left: 12px; border-left: 2px solid var(--accent-line); }
+  .sub > div { display: flex; align-items: baseline; gap: 10px; padding: 8px 0; flex-wrap: wrap; }
+  .sub .c { font-family: var(--mono); font-size: 11.5px; color: var(--muted); width: 74px; flex-shrink: 0; }
+  .sub .t { flex-grow: 1; min-width: 160px; font-size: 12.5px; line-height: 1.4; color: var(--body); }
+  .sub .r { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .sub .v { font-family: var(--mono); font-size: 13px; font-weight: 600; width: 44px; text-align: right; }
+  .sub .is-alert .c, .sub .is-alert .r, .sub .is-alert .v { color: var(--alert-strong); }
+
+  .dropzone { border: 2px dashed #B9C4BE; border-radius: 10px; padding: 18px; background: #FBFAF6; display: flex; align-items: center; gap: 14px; }
+  .check { display: flex; align-items: flex-start; gap: 9px; margin-bottom: 10px; font-size: 13px; color: var(--body); line-height: 1.45; }
+  .check:last-child { margin-bottom: 0; }
+  .check svg { flex-shrink: 0; margin-top: 2px; }
+
+  .steps { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; font-size: 12.5px; color: var(--muted); }
+  .steps b { display: flex; align-items: center; gap: 6px; color: var(--ink); font-weight: 600; }
+  .dot { width: 20px; height: 20px; border-radius: 50%; background: #E6E1D6; color: var(--muted); display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+  .dot--on { background: var(--accent); color: #FFFFFF; }
+
+  .visit { border: 1px solid var(--line-soft); border-radius: 10px; padding: 13px 14px; margin-bottom: 10px; }
+  .visit--on { background: var(--accent-soft); border-color: var(--accent-line); }
+  .visit h3 { margin: 4px 0 4px 0; }
+
+  .chartbox { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .chartbox svg { display: block; min-width: 560px; width: 100%; height: auto; }
+  .serieskey { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-bottom: 14px; }
+  .serieskey span { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; color: var(--body); }
+  .key { width: 15px; height: 3px; border-radius: 2px; }
+
+  .tablebox { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 13px; }
+  th { text-align: right; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); padding: 0 8px 10px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th:first-child, th:nth-child(2) { text-align: left; }
+  td { text-align: right; padding: 12px 8px; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
+  td:first-child, td:nth-child(2) { text-align: left; }
+  tr:last-child td { border-bottom: 0; }
+
+  select, input[type="search"] { width: 100%; min-height: 46px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); font: inherit; font-size: 14px; color: var(--ink); }
+  label { display: block; font-size: 12.5px; color: var(--muted); margin-bottom: 6px; }
+
+  .filters { display: flex; gap: 7px; overflow-x: auto; margin: 12px 0; -webkit-overflow-scrolling: touch; }
+  .filters::-webkit-scrollbar { display: none; }
+  .fbtn { appearance: none; border: 1px solid var(--line); background: var(--surface); color: var(--body); font: inherit; font-size: 13px; min-height: 40px; padding: 0 14px; border-radius: 999px; white-space: nowrap; cursor: pointer; flex-shrink: 0; }
+  .fbtn[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #FFFFFF; font-weight: 600; }
+
+  .rule { padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
+  .rule:last-child { border-bottom: 0; }
+  .rule__h { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-bottom: 5px; }
+  .rule__t { font-size: 13.5px; font-weight: 600; line-height: 1.4; margin-bottom: 5px; }
+  .rule__r { font-size: 12.5px; line-height: 1.55; color: var(--body); }
+  .rule__na { font-size: 12px; color: var(--muted); margin-top: 5px; }
+
+  .chain { display: flex; flex-direction: column; gap: 0; }
+  .chain__s { border-left: 2px solid var(--accent-line); padding: 0 0 18px 16px; position: relative; }
+  .chain__s:last-child { border-left-color: transparent; padding-bottom: 0; }
+  .chain__s::before { content: ""; position: absolute; left: -7px; top: 3px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); }
+  .chain__n { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 5px; }
+  .eq { font-family: var(--mono); font-size: 12.5px; background: #EFEBE1; border-radius: 6px; padding: 9px 11px; margin-top: 8px; overflow-x: auto; white-space: nowrap; }
+
+  .foot { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  @media (min-width: 760px) {
+    body { font-size: 15.5px; }
+    .wrap { padding: 28px 28px 60px 28px; }
+    h1 { font-size: 34px; }
+    .grid4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .tiles { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card { padding: 22px 24px; }
+    .idx__val { font-size: 38px; }
+    .matrix { grid-template-columns: 140px repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .matrix .c { font-size: 18px; padding: 14px; }
+    .two { display: grid; grid-template-columns: 1.4fr 1fr; gap: 14px; align-items: start; }
+    .two > .card { margin-bottom: 0; }
+    .ind .b { width: 120px; }
+    .ind .c { width: 82px; }
+    .cover__mark { font-size: 76px; }
+    .cover__sub { font-size: 13px; margin-top: 16px; }
+    .tile { min-height: 148px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <button class="backbtn" type="button" id="back" aria-label="Retour">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    <span>Retour</span>
+  </button>
+  <span class="ptitle" id="ptitle">HSE</span>
+  <span class="avatar">RS</span>
+</div>
+
+<section class="cover is-on" id="v-cover">
+  <div class="cover__top">
+    <div class="cover__mark">HSE</div>
+    <div class="cover__sub">Chantiers de construction</div>
+  </div>
+  <div class="cover__go">
+    <button class="arrowbtn" type="button" id="enter" aria-label="Entrer dans la plateforme">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+    </button>
+  </div>
+  <div class="cover__art">
+<svg viewBox="0 0 960 400" role="img" aria-label="Illustration d'un chantier de construction : grue, bâtiment en cours, palissade, camion-citerne et travailleurs">
+      <rect x="0" y="0" width="960" height="400" fill="#EBF0ED"/>
+      <circle cx="812" cy="86" r="42" fill="#F3E3C6"/>
+
+      <!-- arriere-plan : ville -->
+      <g fill="#CBD8D3">
+        <rect x="24" y="196" width="66" height="124"/>
+        <rect x="100" y="164" width="52" height="156"/>
+        <rect x="162" y="212" width="74" height="108"/>
+        <rect x="838" y="180" width="60" height="140"/>
+        <rect x="906" y="216" width="42" height="104"/>
+      </g>
+
+      <!-- sol -->
+      <rect x="0" y="318" width="960" height="82" fill="#E0DACD"/>
+      <rect x="0" y="318" width="960" height="4" fill="#CFC7B6"/>
+
+      <!-- batiment en construction -->
+      <g>
+        <rect x="574" y="140" width="222" height="180" fill="#9FB2AB"/>
+        <g fill="#8AA098">
+          <rect x="574" y="140" width="222" height="7"/>
+          <rect x="574" y="186" width="222" height="7"/>
+          <rect x="574" y="232" width="222" height="7"/>
+          <rect x="574" y="278" width="222" height="7"/>
+        </g>
+        <g fill="#C7D3CE">
+          <rect x="600" y="158" width="34" height="22"/><rect x="650" y="158" width="34" height="22"/><rect x="700" y="158" width="34" height="22"/>
+          <rect x="600" y="204" width="34" height="22"/><rect x="650" y="204" width="34" height="22"/><rect x="700" y="204" width="34" height="22"/>
+          <rect x="600" y="250" width="34" height="22"/><rect x="700" y="250" width="34" height="22"/>
+        </g>
+        <!-- echafaudage -->
+        <g stroke="#6F847D" stroke-width="3" fill="none">
+          <path d="M566 140 V320 M756 140 V320 M796 140 V320"/>
+          <path d="M566 176 H796 M566 222 H796 M566 268 H796 M566 310 H796"/>
+        </g>
+      </g>
+
+      <!-- grue -->
+      <g>
+        <rect x="470" y="62" width="13" height="258" fill="#7E938B"/>
+        <g stroke="#7E938B" stroke-width="3">
+          <path d="M470 96 L483 130 M483 96 L470 130 M470 164 L483 198 M483 164 L470 198 M470 232 L483 266 M483 232 L470 266"/>
+        </g>
+        <rect x="388" y="66" width="330" height="11" fill="#64796F"/>
+        <rect x="380" y="58" width="34" height="27" fill="#4E6259"/>
+        <path d="M476 40 L640 66 L476 66 Z" fill="none" stroke="#64796F" stroke-width="3"/>
+        <path d="M476 40 L400 66" fill="none" stroke="#64796F" stroke-width="3"/>
+        <line x1="648" y1="77" x2="648" y2="168" stroke="#4E6259" stroke-width="2.5"/>
+        <rect x="632" y="168" width="32" height="22" fill="#C46A1F"/>
+      </g>
+
+      <!-- arbre -->
+      <g>
+        <rect x="892" y="276" width="10" height="46" fill="#5B4632"/>
+        <circle cx="897" cy="258" r="30" fill="#4C7A55"/>
+        <circle cx="874" cy="272" r="20" fill="#588B60"/>
+        <circle cx="920" cy="272" r="18" fill="#588B60"/>
+      </g>
+
+      <!-- stock de materiaux bache -->
+      <g>
+        <path d="M112 320 L140 268 L208 268 L236 320 Z" fill="#0E5E58"/>
+        <path d="M112 320 L140 268 L208 268 L236 320 Z" fill="none" stroke="#0A4541" stroke-width="2"/>
+        <path d="M140 268 L174 320 M208 268 L174 320" stroke="#0A4541" stroke-width="2" fill="none"/>
+      </g>
+
+      <!-- camion citerne -->
+      <g>
+        <rect x="272" y="258" width="120" height="44" rx="10" fill="#2F4340"/>
+        <rect x="378" y="272" width="46" height="30" rx="5" fill="#16211F"/>
+        <rect x="386" y="278" width="20" height="13" rx="2" fill="#9FB3AF"/>
+        <circle cx="306" cy="308" r="13" fill="#16211F"/><circle cx="306" cy="308" r="5" fill="#8A918F"/>
+        <circle cx="364" cy="308" r="13" fill="#16211F"/><circle cx="364" cy="308" r="5" fill="#8A918F"/>
+        <circle cx="404" cy="308" r="13" fill="#16211F"/><circle cx="404" cy="308" r="5" fill="#8A918F"/>
+      </g>
+
+      <!-- palissade -->
+      <g>
+        <rect x="0" y="286" width="250" height="34" fill="#0E5E58"/>
+        <g stroke="#0A4541" stroke-width="2">
+          <path d="M28 286 V320 M64 286 V320 M100 286 V320 M136 286 V320 M172 286 V320 M208 286 V320 M244 286 V320"/>
+        </g>
+        <rect x="0" y="282" width="250" height="6" fill="#0A4541"/>
+      </g>
+
+      <!-- cones -->
+      <g fill="#C46A1F">
+        <path d="M452 320 L462 288 L472 320 Z"/><rect x="446" y="318" width="32" height="5" rx="2"/>
+        <path d="M506 320 L516 292 L526 320 Z"/><rect x="500" y="318" width="32" height="5" rx="2"/>
+      </g>
+
+      <!-- travailleurs -->
+      <g>
+        <g>
+          <path d="M600 300 a13 13 0 0 1 26 0 Z" fill="#C46A1F"/>
+          <rect x="598" y="299" width="30" height="4" rx="2" fill="#C46A1F"/>
+          <rect x="606" y="303" width="14" height="10" fill="#E8C9A6"/>
+          <rect x="601" y="310" width="24" height="26" rx="6" fill="#1F3A55"/>
+          <rect x="604" y="334" width="7" height="20" fill="#16211F"/>
+          <rect x="615" y="334" width="7" height="20" fill="#16211F"/>
+        </g>
+        <g>
+          <path d="M656 306 a12 12 0 0 1 24 0 Z" fill="#C46A1F"/>
+          <rect x="654" y="305" width="28" height="4" rx="2" fill="#C46A1F"/>
+          <rect x="662" y="309" width="12" height="9" fill="#8A6244"/>
+          <rect x="657" y="316" width="22" height="24" rx="6" fill="#4C6B4F"/>
+          <rect x="660" y="338" width="6" height="18" fill="#16211F"/>
+          <rect x="670" y="338" width="6" height="18" fill="#16211F"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<div class="wrap">
+
+<!-- ================= ACCUEIL ================= -->
+<section class="panel" id="v-accueil" role="tabpanel">
+
+  <div class="tiles">
+    <button class="tile" type="button" data-go="guide">
+      <span class="tile__ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+      <span class="tile__n">Guide</span>
+    </button>
+
+    <button class="tile" type="button" data-go="referentiel">
+      <span class="tile__ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/><circle cx="7" cy="6" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="17" cy="18" r="1.6" fill="currentColor" stroke="none"/></svg></span>
+      <span class="tile__n">Référentiel</span>
+    </button>
+
+    <button class="tile" type="button" data-go="import">
+      <span class="tile__ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m8 7 4-4 4 4"/><path d="M20 15v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-4"/></svg></span>
+      <span class="tile__n">Import</span>
+    </button>
+
+    <button class="tile" type="button" data-go="saisie">
+      <span class="tile__ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
+      <span class="tile__n">Saisie</span>
+    </button>
+
+    <button class="tile" type="button" data-go="calcul">
+      <span class="tile__ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8"/><path d="M8 11h.01"/><path d="M12 11h.01"/><path d="M16 11h.01"/><path d="M8 15h.01"/><path d="M12 15h.01"/><path d="M16 15v4"/></svg></span>
+      <span class="tile__n">Calcul</span>
+    </button>
+
+    <button class="tile" type="button" data-go="rapport">
+      <span class="tile__ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></span>
+      <span class="tile__n">Rapport</span>
+    </button>
+
+    <button class="tile" type="button" data-go="suivi">
+      <span class="tile__ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></span>
+      <span class="tile__n">Suivi</span>
+    </button>
+
+    <button class="tile" type="button" data-go="detail">
+      <span class="tile__ic"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+      <span class="tile__n">Détail</span>
+    </button>
+  </div>
+
+</section>
+
+<!-- ================= GUIDE ================= -->
+<section class="panel" id="v-guide" role="tabpanel" hidden>
+  <h1>Guide</h1>
+  <p class="small muted">Ce que fait l'outil, dans quel ordre, et selon quelles règles.</p>
+
+  <div class="card">
+    <h2>Mode d'emploi</h2>
+    <div class="rowlist">
+      <div><h3>1. Exporter les données de KoboToolbox</h3><div class="rowtext">Format XLS, « Valeurs et en-têtes XML », sans inclure les groupes dans les en-têtes.</div></div>
+      <div><h3>2. Déposer l'export</h3><div class="rowtext">Le fichier est lu tel quel, sans retouche. Les colonnes sont reconnues par leur code Kobo.</div></div>
+      <div><h3>3. Choisir la visite</h3><div class="rowtext">Une visite est identifiée par le couple code du chantier et date. Ce sont les deux seules informations à fournir.</div></div>
+      <div><h3>4. Vérifier les contrôles</h3><div class="rowtext">Toute ligne signalée en rouge est une anomalie : valeur manquante, hors champ, NA interdit, numérateur supérieur au dénominateur.</div></div>
+      <div><h3>5. Lire le rapport</h3><div class="rowtext">Alertes, quatre indices, décomposition par paramètre, sous-indicateurs faibles.</div></div>
+      <div><h3>6. Archiver la visite</h3><div class="rowtext">La ligne rejoint l'historique du chantier et devient comparable aux visites suivantes.</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Échelle de lecture</h2>
+    <div class="rowlist">
+      <div><div class="rowhead"><span class="pill p1">Initial</span><span class="code">0 à 20</span></div><div class="rowtext">Les exigences ne sont pas satisfaites. Ce qui existe relève du hasard. Mettre en place le socle réglementaire.</div></div>
+      <div><div class="rowhead"><span class="pill p2">Basique</span><span class="code">20 à 40</span></div><div class="rowtext">Quelques dispositions isolées, sans lien entre elles. Combler les manques les plus exposants.</div></div>
+      <div><div class="rowhead"><span class="pill p3">Défini</span><span class="code">40 à 60</span></div><div class="rowtext">La plupart des exigences font l'objet d'une disposition, mais l'application reste partielle. Généraliser à l'ensemble du chantier.</div></div>
+      <div><div class="rowhead"><span class="pill p4">Maîtrisé</span><span class="code">60 à 80</span></div><div class="rowtext">Les exigences sont satisfaites et appliquées de façon régulière. Établir la traçabilité.</div></div>
+      <div><div class="rowhead"><span class="pill p5">Optimisé</span><span class="code">80 à 100</span></div><div class="rowtext">Les exigences sont satisfaites, appliquées et tracées. Maintenir et contrôler périodiquement.</div></div>
+    </div>
+    <p class="tiny muted" style="margin-top:14px;">Bornes fermées à gauche, ouvertes à droite : un indice de 60,0 relève de Maîtrisé. L'échelle s'applique à l'indice de dimension comme au score de paramètre.</p>
+  </div>
+
+  <div class="card">
+    <h2>Règles générales de cotation</h2>
+    <div class="rowlist">
+      <div><h3>Binaire</h3><div class="rowtext">1 = l'exigence est entièrement satisfaite ; 0 = elle ne l'est pas. Aucune valeur intermédiaire.</div></div>
+      <div><h3>Libellés « Absence de… »</h3><div class="rowtext">Coter 1 si aucune situation non conforme n'est constatée ; 0 dès qu'un seul cas est constaté.</div></div>
+      <div><h3>Maturité</h3><div class="rowtext">Choisir l'échelon dont la description correspond à ce qui est observé, de 1 à 5.</div></div>
+      <div><h3>Taux</h3><div class="rowtext">Relever le numérateur et le dénominateur, jamais un pourcentage estimé.</div></div>
+      <div><h3>Preuve écrite</h3><div class="rowtext">Pour une formation, une séance, une désignation ou un document, la déclaration orale ne suffit pas.</div></div>
+      <div><h3>Non applicable</h3><div class="rowtext">Uniquement si le critère écrit dans la colonne « NA si » est rempli. Ailleurs, l'absence d'un document vaut zéro, jamais NA.</div></div>
+      <div><h3>Emprise observée</h3><div class="rowtext">Le front de travaux, la base-vie et les installations qui le desservent.</div></div>
+      <div><h3>Projets linéaires</h3><div class="rowtext">Pour un projet couvrant plusieurs voies, l'unité observée est le tronçon en travaux et la base-vie qui le dessert.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REFERENTIEL ================= -->
+<section class="panel" id="v-referentiel" role="tabpanel" hidden>
+  <h1>Référentiel</h1>
+  <p class="small muted">4 dimensions · 12 paramètres · 33 indicateurs · 131 sous-indicateurs, chacun avec sa règle de cotation.</p>
+
+  <div class="filters" id="dimfilters">
+    <button class="fbtn" type="button" aria-pressed="true" data-dim="">Toutes</button>
+    <button class="fbtn" type="button" aria-pressed="false" data-dim="SA">Santé</button>
+    <button class="fbtn" type="button" aria-pressed="false" data-dim="SE">Sécurité</button>
+    <button class="fbtn" type="button" aria-pressed="false" data-dim="EN">Environnement</button>
+    <button class="fbtn" type="button" aria-pressed="false" data-dim="SO">Social</button>
+  </div>
+
+  <input type="search" id="q" placeholder="Rechercher un code ou un mot" aria-label="Rechercher dans le référentiel">
+
+  <p class="tiny muted" style="margin:12px 0;"><span id="count">131</span> sous-indicateurs affichés</p>
+
+  <div class="card" id="rules"></div>
+</section>
+
+<style>
+.form{display:flex;flex-direction:column;gap:8px;}
+.frow{display:grid;grid-template-columns:150px repeat(3,1fr);gap:8px;align-items:center;}
+.frow>label{font-size:12.5px;color:var(--muted);}
+.f{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;
+   background:var(--surface);color:var(--ink);width:100%;box-sizing:border-box;}
+.f:focus{outline:2px solid var(--accent-soft);outline-offset:1px;border-color:var(--accent);}
+.f.wide{grid-column:2 / -1;}
+textarea.f{grid-column:1 / -1;font-family:var(--mono);font-size:12px;resize:vertical;}
+.vrow{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:9px 0;
+      border-bottom:1px solid var(--line-soft);}
+.vrow:last-child{border-bottom:0;}
+.vrow .btn{padding:5px 10px;font-size:12.5px;}
+.empty{padding:22px 16px;text-align:center;color:var(--muted);font-size:14px;
+       border:1px dashed var(--line);border-radius:10px;background:var(--surface);}
+@media (max-width:640px){
+  .frow{grid-template-columns:1fr 1fr;}
+  .frow>label{grid-column:1 / -1;}
+  .f.wide{grid-column:1 / -1;}
+}
+</style>
+
+
+<section class="panel" id="v-import" role="tabpanel" hidden>
+  <div class="eyebrow">Entrée des données</div>
+  <h1>Saisie des résultats d'une visite</h1>
+  <p class="small muted">Les valeurs se relèvent sur la feuille RAPPORT du classeur de calcul. La
+  plateforme ne recalcule rien à partir des cotations : elle affiche ce que le classeur a produit.
+  Les quatre indices sont la moyenne des trois paramètres de leur dimension, comme dans le
+  classeur.</p>
+
+  <div class="card">
+    <h2>Identification du chantier</h2>
+    <div class="form">
+      <div class="frow"><label>Code</label><input class="f" id="f_code" placeholder="CIIEL"></div>
+      <div class="frow"><label>Intitulé</label><input class="f wide" id="f_nom" placeholder="Construction du …"></div>
+      <div class="frow"><label>Localisation</label><input class="f wide" id="f_loc" placeholder="Akpakpa, Cotonou"></div>
+      <div class="frow"><label>Nature</label><select class="f" id="f_nat"><option value="">—</option><option>Bâtiment</option><option>Voirie</option><option>Assainissement</option></select></div>
+      <div class="frow"><label>Phase</label><select class="f" id="f_phase"><option value="">—</option><option>Installation</option><option>Terrassement</option><option>Gros œuvre</option><option>Second œuvre</option><option>Finitions</option><option>Repli</option></select></div>
+      <div class="frow"><label>Date de visite</label><input class="f" type="date" id="f_date"></div>
+      <div class="frow"><label>Effectif présent</label><input class="f" type="number" min="0" id="f_eff" placeholder="0"><input class="f" type="number" min="0" id="f_femmes" placeholder="dont femmes"></div>
+      <div class="frow"><label>Entreprise</label><input class="f wide" id="f_ent" placeholder="Entreprise exécutante"></div>
+      <div class="frow"><label>Évaluateur</label><input class="f wide" id="f_obs" placeholder="Nom de l'observateur"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Scores des douze paramètres</h2>
+    <p class="tiny muted" style="margin-bottom:12px;">Trois valeurs par dimension, de 0 à 100 :
+    prévention, protection, conformité.</p>
+    <div class="form">
+      <div class="frow"><label class="tiny muted"></label><span class="tiny muted">Prévention</span><span class="tiny muted">Protection</span><span class="tiny muted">Conformité</span></div>
+      <div class="frow"><label>Santé</label><input class="f" type="number" min="0" max="100" step="0.01" id="f_sa_prv" placeholder="—"><input class="f" type="number" min="0" max="100" step="0.01" id="f_sa_prt" placeholder="—"><input class="f" type="number" min="0" max="100" step="0.01" id="f_sa_cnf" placeholder="—"></div>
+<div class="frow"><label>Sécurité</label><input class="f" type="number" min="0" max="100" step="0.01" id="f_se_prv" placeholder="—"><input class="f" type="number" min="0" max="100" step="0.01" id="f_se_prt" placeholder="—"><input class="f" type="number" min="0" max="100" step="0.01" id="f_se_cnf" placeholder="—"></div>
+<div class="frow"><label>Environnement</label><input class="f" type="number" min="0" max="100" step="0.01" id="f_en_prv" placeholder="—"><input class="f" type="number" min="0" max="100" step="0.01" id="f_en_prt" placeholder="—"><input class="f" type="number" min="0" max="100" step="0.01" id="f_en_cnf" placeholder="—"></div>
+<div class="frow"><label>Social</label><input class="f" type="number" min="0" max="100" step="0.01" id="f_so_prv" placeholder="—"><input class="f" type="number" min="0" max="100" step="0.01" id="f_so_prt" placeholder="—"><input class="f" type="number" min="0" max="100" step="0.01" id="f_so_cnf" placeholder="—"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Alertes et non-applicables</h2>
+    <p class="tiny muted" style="margin-bottom:12px;">Nombre d'alertes déclenchées, puis nombre de
+    sous-indicateurs cotés non applicables, par dimension.</p>
+    <div class="form">
+      <div class="frow"><label class="tiny muted"></label><span class="tiny muted">Alertes</span><span class="tiny muted">Non applicables</span><span></span></div>
+      <div class="frow"><label>Santé</label><input class="f" type="number" min="0" step="1" id="a_sa" placeholder="—"><input class="f" type="number" min="0" step="1" id="n_sa" placeholder="—"><span class="tiny muted" style="align-self:center;">sur 32</span></div>
+<div class="frow"><label>Sécurité</label><input class="f" type="number" min="0" step="1" id="a_se" placeholder="—"><input class="f" type="number" min="0" step="1" id="n_se" placeholder="—"><span class="tiny muted" style="align-self:center;">sur 36</span></div>
+<div class="frow"><label>Environnement</label><input class="f" type="number" min="0" step="1" id="a_en" placeholder="—"><input class="f" type="number" min="0" step="1" id="n_en" placeholder="—"><span class="tiny muted" style="align-self:center;">sur 32</span></div>
+<div class="frow"><label>Social</label><input class="f" type="number" min="0" step="1" id="a_so" placeholder="—"><input class="f" type="number" min="0" step="1" id="n_so" placeholder="—"><span class="tiny muted" style="align-self:center;">sur 31</span></div>
+    </div>
+  </div>
+
+  <div class="btnrow">
+    <button class="btn btn--primary" type="button" id="b_add">Enregistrer la visite</button>
+    <button class="btn" type="button" id="b_clearform">Vider le formulaire</button>
+    <button class="btn" type="button" id="b_demo">Charger un exemple</button>
+  </div>
+  <p class="tiny muted" id="msg" style="min-height:18px;"></p>
+
+  <div class="card">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:10px;">
+      <h2 style="margin:0;">Visites enregistrées</h2>
+      <span class="code muted" id="nvis">0</span>
+    </div>
+    <div id="vislist" class="rowlist"></div>
+  </div>
+
+  <div class="card card--flat">
+    <h2>Sauvegarde</h2>
+    <p class="tiny muted" style="margin-bottom:10px;">Le bloc ci-dessous contient toutes les visites
+    enregistrées. Copiez-le pour le conserver, ou collez-en un pour recharger des données.</p>
+    <textarea id="json" class="f wide" rows="5" spellcheck="false"></textarea>
+    <div class="btnrow">
+      <button class="btn" type="button" id="b_copy">Copier</button>
+      <button class="btn" type="button" id="b_load">Charger le bloc collé</button>
+      <button class="btn" type="button" id="b_reset">Tout effacer</button>
+    </div>
+  </div>
+</section>
+
+<section class="panel" id="v-saisie" role="tabpanel" hidden>
+  <div class="eyebrow">Visite sélectionnée</div>
+  <h1 id="s_titre">Aucune visite</h1>
+  <p class="small muted" id="s_sub"></p>
+  <div id="s_body"></div>
+</section>
+
+<section class="panel" id="v-calcul" role="tabpanel" hidden>
+  <div class="eyebrow">Chaîne de calcul</div>
+  <h1>Du sous-indicateur à l'indice</h1>
+  <p class="small muted">Le calcul est conduit par le classeur. Cette page en rappelle les étapes et
+  affiche les valeurs de la visite sélectionnée.</p>
+
+  <div class="card">
+    <div class="chain">
+      <div><div class="chain__n">Sous-indicateur coté</div><div class="chain__s">131 lignes · binaire, maturité ou taux</div></div>
+      <div><div class="chain__n">Score normalisé</div><div class="chain__s">ramené de 0 à 100</div></div>
+      <div><div class="chain__n">Score d'indicateur</div><div class="chain__s">moyenne des sous-indicateurs applicables</div></div>
+      <div><div class="chain__n">Score de paramètre</div><div class="chain__s">moyenne des indicateurs</div></div>
+      <div><div class="chain__n">Indice de dimension</div><div class="chain__s">moyenne des trois paramètres</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Valeurs de la visite</h2>
+    <div id="c_body"></div>
+  </div>
+
+  <div class="card card--flat">
+    <h2>Ce que le calcul ne fait pas</h2>
+    <p class="small">Les quatre indices ne sont jamais réunis en une valeur unique. Aucune pondération
+    n'est introduite entre les paramètres ni entre les indicateurs. Les alertes sont signalées à part
+    et n'entrent pas dans le calcul. Les sous-indicateurs non applicables sont retirés du
+    dénominateur sans être comptés comme nuls.</p>
+  </div>
+</section>
+
+<section class="panel" id="v-rapport" role="tabpanel" hidden>
+  <div class="code" style="color:var(--accent);margin-bottom:8px;" id="r_code">—</div>
+  <h1 id="r_titre">Aucune visite</h1>
+  <p class="small muted" id="r_sub"></p>
+  <div id="r_body"></div>
+</section>
+
+<section class="panel" id="v-detail" role="tabpanel" hidden>
+  <div class="eyebrow">Détail par dimension</div>
+  <h1 id="d_titre">Aucune visite</h1>
+  <div class="filters" id="dimsel"></div>
+  <div id="d_body"></div>
+</section>
+
+<section class="panel" id="v-suivi" role="tabpanel" hidden>
+  <div class="eyebrow">Suivi</div>
+  <h1>Historique des visites</h1>
+  <p class="small muted">Chaque visite enregistrée figure ici. La comparaison dans le temps suppose
+  au moins deux visites sur un même chantier.</p>
+  <div id="u_body"></div>
+</section>
+
+<script>
+var REGLES = [["SA-PRV-1.1","Présence d'un moyen d'arrosage en état de fonctionner et affecté au chantier","Binaire","Camion-citerne, tonne à eau, cuve avec pompe ou tuyau raccordé. Doit être présent, en état de marche et affecté au chantier, non emprunté.","NA interdit"],["SA-PRV-1.2","Présence de bâches ou de couverture sur les stocks de matériaux fins","Binaire","Sable, ciment, chaux, gravier fin, latérite, plâtre. La couverture doit être complète sur la surface exposée et maintenue en place. Un stock partiellement couvert ou à découvert fait tomber à zéro.","Aucun stock de matériau fin"],["SA-PRV-1.3","Absence de nuage de poussière constaté au cours de la visite","Binaire","On attend le passage d'un véhicule ou d'un engin sur une piste et on regarde. Noter la météo des vingt-quatre heures : après une pluie, le point est acquis sans dispositif.","NA interdit"],["SA-PRV-1.4","Présence d’eau au poste de découpe humide","Binaire","Machine conçue pour la coupe à l'eau (scie à matériaux, tronçonneuse à disque diamant) : réservoir rempli ou tuyau raccordé, eau arrivant au disque pendant la coupe.","Aucune découpe, ou découpe exclusivement à l'outil portatif non conçu pour l'eau"],["SA-PRV-2.1","Présence d'un planning de nettoyage du chantier","Binaire","Document présenté par l'encadrement (planning ou consigne écrite) fixant les tâches et la fréquence du nettoyage. Une organisation seulement verbale ne compte pas.","NA interdit"],["SA-PRV-2.2","Absence de déchets alimentaires ou de restes de repas abandonnés sur l'emprise","Binaire","Zones de pause, abords de la base-vie, postes occupés. Zéro dès qu'un dépôt est constaté.","NA interdit"],["SA-PRV-2.3","Présence d'un drainage ou d'un écoulement entretenu évitant la stagnation d'eau","Binaire","Rigole, caniveau, pente aménagée ou pompe. Le dispositif doit exister et être dégagé.","NA interdit"],["SA-PRV-2.4","Absence de récipients, pneus ou débris retenant l'eau sur l'emprise","Binaire","Un seul fût ouvert en eau, pneu abandonné ou ornière en eau fait tomber à zéro.","NA interdit"],["SA-PRV-3.1","Tenue d'un registre des séances de sensibilisation aux risques sanitaires","Binaire","Le registre compte s'il porte au moins une séance avec date, thème et émargement.","NA interdit"],["SA-PRV-3.2","Présence d'un responsable HSE désigné sur le chantier","Binaire","Désignation écrite, puis deux travailleurs interrogés au hasard doivent le nommer.","NA interdit"],["SA-PRV-3.3","Taux de travailleurs ayant reçu une induction sur les risques sanitaires","Taux","Numérateur : signataires de la dernière fiche (quart d'heure ou induction) dont le thème porte sur les risques sanitaires, datée de moins de 30 jours avant la visite ; au-delà ou sans fiche, 0. Dénominateur : effectif total présent le jour de la visite, encadrement compris. Si le numérateur dépasse le dénominateur, saisir un numérateur égal au dénominateur.","NA interdit"],["SA-PRV-3.4","Présence d'affiches sur les règles d'hygiène du chantier","Binaire","Au moins une affiche portant une règle d'hygiène, en place et lisible depuis une zone fréquentée.","NA interdit"],["SA-PRT-1.1","Niveau de port des protections respiratoires aux tâches empoussiérantes","Maturité","1 aucun travailleur ne porte de masque · 2 quelques-uns en portent sans lien avec leur tâche · 3 seuls les travailleurs des tâches les plus empoussiérantes en portent · 4 la plupart des travailleurs exposés en portent · 5 tous les travailleurs exposés observés en portent. Coter à la fin du parcours complet.","Aucune tâche empoussiérante observée"],["SA-PRT-1.2","Niveau de port des protecteurs d’ouïe à proximité des machines à moteur","Maturité","Mêmes échelons, appliqués aux travailleurs opérant ou stationnant près d'un groupe électrogène, d'un compresseur, d'un marteau-piqueur ou d'une plaque vibrante.","Aucune machine à moteur bruyante en fonctionnement"],["SA-PRT-1.3","Niveau de port des protections contre les produits aux tâches de manipulation","Maturité","Mêmes échelons, appliqués aux travailleurs manipulant ciment, chaux, solvants, peintures ou hydrocarbures. Gants, tablier ou lunettes selon la tâche.","Aucune manipulation de produits observée"],["SA-PRT-1.4","Absence de protection individuelle visiblement inadaptée à l’exposition","Binaire","Masque chirurgical contre la poussière, gants en tissu contre le ciment, lunettes opaques. Zéro dès qu'une est constatée.","NA interdit"],["SA-PRT-2.1","Présence d’un abri ombragé accessible aux travailleurs sur l’emprise","Binaire","Structure couverte (préau, bâche tendue, tôle, conteneur ouvert) donnant de l'ombre, accessible pendant les pauses. Un arbre isolé ne compte pas.","NA interdit"],["SA-PRT-2.2","Présence de sièges ou de bancs permettant de s’asseoir","Binaire","Bancs, chaises ou sièges dans l'aire de repos. Parpaings, sacs ou planches posées au sol ne comptent pas.","NA interdit"],["SA-PRT-2.3","Présence d’une aire de repos tenue propre","Binaire","Sol balayé, sans gravats, outils entreposés ni déchets.","NA interdit"],["SA-PRT-2.4","Absence de prise de repos à même le sol ou sous un engin","Binaire","Constat à la pause. Zéro dès qu'un travailleur est observé couché sous une benne ou à même le sol.","NA interdit"],["SA-CNF-1.1","Présence d'une convention ou d'une adhésion à un service de santé au travail","Binaire","On demande la pièce. Obligation de tout chef d'entreprise, sans condition d'effectif.","NA interdit"],["SA-CNF-1.2","Taux de travailleurs dont la fiche d'aptitude est disponible sur le chantier","Taux","Numérateur : travailleurs dont la fiche d'aptitude est présentée sur le site, toutes entreprises confondues. Dénominateur : effectif inscrit aux registres ; à défaut de registre, effectif présent le jour de la visite. Fiches absentes du site ou conservées au siège : numérateur 0. Pas de NA.","NA interdit"],["SA-CNF-1.3","Présence de fiches d'aptitude datées de moins de douze mois","Binaire","On lit les dates. Toutes doivent être en cours de validité.","Aucune fiche n'est présente"],["SA-CNF-1.4","Taux de travailleurs dont la visite médicale d'embauchage est attestée","Taux","Numérateur : travailleurs dont la visite d'embauchage est attestée par une pièce datée présentée sur le site, toutes entreprises confondues. Dénominateur : effectif inscrit aux registres ; à défaut de registre, effectif présent le jour de la visite. Pièces absentes du site ou conservées au siège : numérateur 0. Pas de NA.","NA interdit"],["SA-CNF-2.1","Taux de couverture en cabinets pour les hommes","Taux","Numérateur : nombre de cabinets d'aisances accessibles aux ouvriers, hors cabinets de l'encadrement. Dénominateur : nombre d'ouvriers hommes présents le jour de la visite. Facteur 25, résultat plafonné à 100 %.","NA interdit"],["SA-CNF-2.2","Taux de couverture en cabinets pour les femmes","Taux","Numérateur : nombre de cabinets d'aisances accessibles aux ouvrières, hors cabinets de l'encadrement. Dénominateur : nombre d'ouvrières présentes le jour de la visite. Facteur 15, résultat plafonné à 100 %.","Aucune ouvrière présente le jour de la visite"],["SA-CNF-2.3","Niveau d’équipement des installations sanitaires","Maturité","Coter les sanitaires accessibles aux ouvriers, pas ceux de l'encadrement. 1 aucune installation sanitaire utilisable · 2 cabinets présents, non séparés par sexe · 3 cabinets séparés par sexe · 4 séparés et signalés (mention ou pictogramme) · 5 séparés, signalés, avec papier et point d'eau pour le lavage des mains.","NA interdit"],["SA-CNF-2.4","Présence d'eau potable mise à disposition par l'employeur","Binaire","Compte 0 si les travailleurs apportent ou achètent leur eau.","NA interdit"],["SA-CNF-3.1","Présence du local de soins exigé par l'effectif (infirmerie à partir de trente travailleurs, salle de soins en deçà)","Binaire","Infirmerie à partir de trente travailleurs, salle de soins en deçà. Temporaires et occasionnels compris dans l'effectif. Seuil de trente apprécié sur l'effectif présent ; en cas de doute, demander à l'encadrement et le noter en observation.","NA interdit"],["SA-CNF-3.2","Présence d'une boîte de secours contenant des produits non périmés","Binaire","On l'ouvre et on lit les dates.","NA interdit"],["SA-CNF-3.3","Présence d’une équipe de secouriste constituée","Binaire","Liste nominative des secouristes, avec une attestation de formation au secourisme pour chacun. Si tout le personnel est formé : 1, à condition que la liste et les attestations existent. Une simple sensibilisation n'est pas une formation.","NA interdit"],["SA-CNF-3.4","Présence d’au moins un secouriste sur le terrain","Binaire","Au moins une personne de la liste des secouristes présente sur l'emprise au moment de la visite et identifiée par l'encadrement.","NA interdit"],["SE-PRV-1.1","Présence d'une analyse des risques écrite propre au chantier","Binaire","Le document compte s'il identifie les risques de ce chantier, non ceux du projet en général.","NA interdit"],["SE-PRV-1.2","Présence de mesures de maîtrise associées à chaque risque identifié","Binaire","Chaque risque doit porter en regard la mesure prévue. Une liste sans mesures ne compte pas.","NA interdit"],["SE-PRV-1.3","Présence d’un plan de consignation et de déconsignation des engins électriques","Binaire","Procédure écrite : mise hors tension, condamnation, vérification d'absence de tension avant intervention, puis remise sous tension.","Aucun engin ni équipement électrique sur le chantier"],["SE-PRV-1.4","Tenue d’un registre de formation de la sécurité","Binaire","Le registre compte s'il porte au moins une séance de formation à la sécurité avec date, thème et émargement.","NA interdit"],["SE-PRV-2.1","Présence d'un balisage des fouilles et des trémies","Binaire","Rubalise, barrière ou cône. Toutes les fouilles et trémies ouvertes doivent être balisées : une seule non balisée fait tomber à zéro.","Aucune fouille ni trémie ouverte"],["SE-PRV-2.2","Présence de séparation des voies de circulation d’engins et de piétons","Binaire","Barrière, plot, cordage, muret ou marquage continu séparant engins et piétons. Un cheminement emprunté par habitude ne compte pas.","Aucun engin ni véhicule ne circule sur l'emprise"],["SE-PRV-2.3","Présence de garde-corps ou de couverture aux ouvertures et bords de dalle","Binaire","Toutes doivent être protégées.","Le chantier ne comporte aucune ouverture ni bord de dalle"],["SE-PRV-2.4","Présence d'échafaudages munis d'un plancher complet, d'un garde-corps et d'un accès fixe","Binaire","Trois faits requis sur chaque échafaudage.","Aucun échafaudage"],["SE-PRV-3.1","Présence de l’habilitation des conducteurs d’engins","Binaire","Autorisation de conduite ou attestation de formation au nom de chaque conducteur d'engin présent. Un seul conducteur sans pièce fait tomber à zéro.","Aucun engin sur le chantier"],["SE-PRV-3.2","Taux d’engins dotés d’un avertisseur de recul en état de fonctionnement","Taux","Numérateur : engins dont l'avertisseur de recul fonctionne (marche arrière observée ou essai demandé). Dénominateur : engins en activité sur l'emprise.","Aucun engin sur le chantier"],["SE-PRV-3.3","Présence d’un balisage des zones de manœuvre","Binaire","Rubalise, cônes, barrières ou marquage délimitant l'aire d'évolution des engins et interdisant l'accès aux piétons.","Aucun engin sur le chantier"],["SE-PRV-3.4","Présence d’une personne guidant les manœuvres","Binaire","Toute marche arrière ou manœuvre à visibilité réduite observée est guidée par une personne désignée. Zéro dès qu'une manœuvre est observée sans guide.","Aucune manœuvre observée pendant la visite"],["SE-PRT-1.1","Niveau de port de l’équipement de protection individuelle","Maturité","EPI de base obligatoires : casque, chaussures de sécurité et gilet haute visibilité. Un travailleur n'est compté comme équipé que s'il porte les trois et qu'ils sont en bon état : casque non fendu, chaussures non déchirées, gilet non déchiré. Un EPI porté mais hors d'usage ne compte pas. 1 aucun travailleur équipé · 2 une minorité de travailleurs équipés · 3 environ la moitié · 4 la plupart · 5 tous les travailleurs observés. Coter à la fin du parcours.","NA interdit"],["SE-PRT-1.2","Présence du port des équipements de protection par les visiteurs","Binaire","Tous les visiteurs observés. Un seul sans fait tomber à zéro.","Aucun visiteur au moment de la visite"],["SE-PRT-1.3","Présence du port des équipements de protection par l'encadrement","Binaire","Tous les encadrants observés.","NA interdit"],["SE-PRT-1.4","Absence de travailleur en tenue manifestement inadaptée au poste","Binaire","Torse nu, pieds nus, tongs, short au ferraillage ou à la manutention.","NA interdit"],["SE-PRT-2.1","Présence d'extincteurs adaptés aux risques du chantier","Binaire","Poudre ou dioxyde de carbone pour les hydrocarbures et l'électricité, eau ou mousse pour les solides.","NA interdit"],["SE-PRT-2.2","Présence d'extincteurs répartis aux points sensibles","Binaire","Stockage de carburants, groupe électrogène, atelier, base-vie, armoire électrique.","NA interdit"],["SE-PRT-2.3","Présence d'un moyen d'alerte permettant de donner l'alarme sur le chantier","Binaire","Sirène, cloche, corne, sifflet.","NA interdit"],["SE-PRT-2.4","Présence d'un point de rassemblement identifié et signalé","Binaire","Matérialisé au sol ou par un panneau.","NA interdit"],["SE-PRT-3.1","Présence d'un coffret de chantier muni d'un dispositif différentiel","Binaire","On cherche sur le coffret un module portant un bouton test.","Aucune installation électrique sur le chantier"],["SE-PRT-3.2","Présence d'un piquet de terre relié aux équipements électriques","Binaire","Le piquet doit être planté et relié par un conducteur.","Aucune installation électrique sur le chantier"],["SE-PRT-3.3","Présence de coffrets et boîtiers de raccordement fermés","Binaire","Un boîtier ouvert laisse les conducteurs accessibles.","Aucune installation électrique sur le chantier"],["SE-PRT-3.4","Présence d'un dispositif de coupure générale accessible et signalé","Binaire","Organe de coupure, accès dégagé, repérage. Rattachement indirect à l'obligation générale de sécurité.","Aucune installation électrique sur le chantier"],["SE-CNF-1.1","Présence d'une attestation de conformité visée par l'organisme public de contrôle","Binaire","Le visa conditionne la mise sous tension.","Aucune installation électrique sur le chantier"],["SE-CNF-1.2","Présence d'un rapport de contrôle périodique daté et non périmé","Binaire","On lit la date du dernier rapport et la périodicité prévue : le rapport doit couvrir la date de la visite.","Aucune installation électrique sur le chantier"],["SE-CNF-1.3","Présence d'une trace de levée des recommandations formulées au rapport","Binaire","Pour chaque recommandation du dernier rapport, une trace datée de correction.","Le rapport ne formule aucune recommandation"],["SE-CNF-1.4","Présence d'un registre des vérifications électriques tenu sur le chantier","Binaire","Compte 0 s'il est au seul siège.","Aucune installation électrique sur le chantier"],["SE-CNF-2.1","Tenue d'un registre des accidents du travail sur le chantier","Binaire","Compte 0 s'il est au seul siège.","NA interdit"],["SE-CNF-2.2","Présence des déclarations transmises à l'inspection du travail et à la CNSS","Binaire","Transmission simultanée aux deux destinataires, dans les quarante-huit heures.","Aucun accident depuis l'ouverture du chantier"],["SE-CNF-2.3","Présence d'un affichage de la conduite à tenir en cas d'accident","Binaire","Qui prévenir, quel numéro, où se rendre.","NA interdit"],["SE-CNF-2.4","Présence d'un responsable désigné pour la déclaration des accidents","Binaire","Désignation écrite, et l'encadrement le nomme.","NA interdit"],["SE-CNF-3.1","Présence d'un comité d'hygiène et de sécurité constitué","Binaire","On demande l'acte de constitution. Seuil de trente apprécié sur l'effectif présent ; en cas de doute, demander à l'encadrement et le noter en observation.","L'effectif est inférieur à trente salariés"],["SE-CNF-3.2","Présence de l'affichage de la composition du comité sur le chantier","Binaire","Liste des membres affichée dans un lieu fréquenté du chantier. Seuil de trente apprécié sur l'effectif présent ; en cas de doute, demander à l'encadrement et le noter en observation.","Effectif inférieur à trente salariés"],["SE-CNF-3.3","Taux de trimestres comportant au moins une réunion du comité sur les douze derniers mois","Taux","Numérateur : trimestres civils, parmi les douze mois précédant la visite, comportant au moins un procès-verbal de réunion du comité. Une causerie ou un quart d'heure sécurité ne compte pas. Dénominateur : trimestres pendant lesquels le chantier était actif, quatre au maximum. Le trimestre en cours compte s'il comporte déjà un PV. Seuil de trente apprécié sur l'effectif présent ; en cas de doute, demander à l'encadrement et le noter en observation.","L'effectif est inférieur à trente salariés"],["SE-CNF-3.4","Présence des procès-verbaux portant une trace de transmission à l'inspection du travail","Binaire","Procès-verbaux des réunions tenues, avec bordereau ou accusé de transmission à l'inspection du travail. Seuil de trente apprécié sur l'effectif présent ; en cas de doute, demander à l'encadrement et le noter en observation.","Effectif inférieur à trente salariés"],["EN-PRV-1.1","Présence d'un plan de gestion des déchets propre au chantier","Binaire","Un plan général de l'entreprise ne compte pas.","NA interdit"],["EN-PRV-1.2","Présence d'un contrat avec une structure agréée","Binaire","Contrat de collecte ou d'élimination avec un prestataire, accompagné de l'agrément ou de l'autorisation de ce prestataire. Le contrat seul ne suffit pas.","NA interdit"],["EN-PRV-1.3","Présence de contenants répartis là où les déchets se produisent","Binaire","S'il faut traverser le chantier pour en trouver un, il ne compte pas.","NA interdit"],["EN-PRV-1.4","Taux de travailleurs ayant reçu une consigne sur le tri des déchets","Taux","Numérateur : signataires de la dernière fiche (quart d'heure ou induction) dont le thème porte sur les déchets, datée de moins de 30 jours avant la visite ; au-delà ou sans fiche, 0. Dénominateur : effectif total présent le jour de la visite, encadrement compris. Si le numérateur dépasse le dénominateur, saisir un numérateur égal au dénominateur.","NA interdit"],["EN-PRV-2.1","Présence d'une aire de stockage des hydrocarbures délimitée et identifiée","Binaire","Clôture, muret ou marquage, plus un panneau. Les deux conditions.","Aucun hydrocarbure stocké sur le chantier"],["EN-PRV-2.2","Présence de contenants d’hydrocarbures en bon état sur l’aire de stockage","Binaire","Fûts et cuves fermés, sans perforation ni fuite. Un seul contenant ouvert, percé ou fuyant fait tomber à zéro.","Aucun hydrocarbure stocké sur le chantier"],["EN-PRV-2.3","Présence de sanitaires raccordés à une fosse ou à un dispositif de collecte étanche, situé à plus de quinze mètres de tout point d'eau","Binaire","Deux faits requis : le raccordement et la distance.","NA interdit"],["EN-PRV-2.4","Présence d'une organisation de vidange définie","Binaire","Prestataire identifié ou fréquence fixée par écrit.","NA interdit"],["EN-PRV-3.1","Absence de fumée noire à l'échappement des engins et véhicules en fonctionnement","Binaire","On regarde au démarrage et à la montée en charge. Zéro dès qu'un seul en émet.","Aucun engin ni véhicule affecté au chantier"],["EN-PRV-3.2","Absence de fuite visible sous les engins et véhicules","Binaire","Tache d'huile fraîche ou sol imprégné sous un engin ou un véhicule à l'arrêt. Zéro dès qu'une fuite est constatée.","Aucun engin ni véhicule affecté au chantier"],["EN-PRV-3.3","Absence de brulage de déchets sur l’emprise","Binaire","Foyer, cendres ou restes calcinés de déchets (plastiques, bois, emballages) sur l'emprise. Zéro dès qu'une trace récente est constatée.","NA interdit"],["EN-PRV-3.4","Présence d'un bâchage des camions transportant du sable, du ciment, de la latérite ou du gravier fin","Binaire","Tous les camions observés à la sortie.","Aucun transport de matériau pulvérulent observé"],["EN-PRT-1.1","Présence de matériel absorbant disponible sur l'aire de stockage","Binaire","Sable, sciure ou kit anti-pollution.","Le chantier ne détient ni hydrocarbures ni produits liquides"],["EN-PRT-1.2","Présence d'un sol étanche, d'une dalle ou d'une bâche sous la zone de stockage des liquides","Binaire","Un sol nu ou simplement compacté ne compte pas.","Le chantier ne détient ni hydrocarbures ni produits liquides"],["EN-PRT-1.3","Absence de sol imprégné ou de trace de déversement non traitée sur l'emprise","Binaire","Tache d'huile, terre noircie, écoulement.","Le chantier ne détient ni hydrocarbures ni produits liquides"],["EN-PRT-1.4","Présence d'un contenant destiné aux terres et matériaux souillés récupérés","Binaire","Fût, bac ou sac identifié, réservé aux terres et absorbants souillés.","NA interdit"],["EN-PRT-2.1","Présence d’une fosse ou d’un dispositif de collecte étanche recevant les eaux des sanitaires","Binaire","Fosse étanche, cabine autonome ou cuve recevant les eaux des sanitaires. On vérifie le raccordement.","Aucun sanitaire sur le chantier (déjà sanctionné en santé)"],["EN-PRT-2.2","Absence de rejet d’eaux usées dans les caniveaux d’évacuation des eaux pluviales","Binaire","Interdiction expresse. On suit tuyaux et rigoles issus des sanitaires, de la base-vie et des aires de lavage jusqu'à leur débouché.","NA interdit"],["EN-PRT-2.3","Absence de rejet d’effluents dans un puits ou un puisard","Binaire","Interdiction expresse, même pour des effluents traités. On recherche tout puits perdu, cavité ou puisard recevant des effluents.","NA interdit"],["EN-PRT-2.4","Absence de rejet d’eaux de lavage à même le sol","Binaire","Eaux de lavage des engins, bétonnières, outils ou laitance de béton. On regarde où l'eau débouche. Zéro dès qu'un rejet au sol est constaté.","Aucune opération de lavage sur le chantier"],["EN-CNF-1.1","Présence du certificat de conformité environnementale et sociale délivré pour le projet et en cours de validité","Binaire","On lit l'objet et la date d'expiration : le certificat doit se rapporter au projet et être valide le jour de la visite.","NA interdit"],["EN-CNF-1.2","Niveau de mise en œuvre des recommandations issues du certificat de conformité","Maturité","On part de la liste des prescriptions du certificat et on vérifie chacune. 1 aucune mise en œuvre ou suivi impossible · 2 quelques-unes, sans suivi · 3 environ la moitié · 4 la plupart · 5 toutes, mises en œuvre et tracées.","Aucun certificat"],["EN-CNF-1.3","Présence des prescriptions assorties au certificat, disponibles sur le chantier","Binaire","Liste des prescriptions disponible sur le chantier, non au seul siège.","Aucun certificat"],["EN-CNF-1.4","Présence d'une trace de visite ou d’inspection environnementale exercée sur le chantier","Binaire","Rapport de mission, fiche de visite, procès-verbal daté et se rapportant à ce chantier.","NA interdit"],["EN-CNF-2.1","Présence du plan de gestion environnementale et sociale décliné au chantier","Binaire","Un document du projet non décliné au chantier ne compte pas.","NA interdit"],["EN-CNF-2.2","Présence d'un responsable environnement désigné pour sa mise en œuvre","Binaire","Désignation écrite, et l'encadrement le nomme.","NA interdit"],["EN-CNF-2.3","Présence des rapports périodiques de suivi environnemental portant une trace de transmission","Binaire","Rapports datés, conformes à la périodicité prévue au PGES, avec trace de transmission (bordereau, accusé, courriel).","NA interdit"],["EN-CNF-2.4","Présence d'une trace de suite donnée aux non-conformités relevées lors des missions de contrôle","Binaire","Pour chaque non-conformité relevée, une action datée.","Aucune non-conformité relevée"],["EN-CNF-3.1","Présence d’une trace de l’inventaire des arbres situés dans l’emprise du projet","Binaire","Document daté listant les arbres de l'emprise (nombre, espèce ou localisation), se rapportant au projet.","L'emprise ne comporte et n'a comporté aucun arbre"],["EN-CNF-3.2","Présence de l’autorisation d’abattage délivrée par l’autorité compétente","Binaire","Autorisation écrite de l'autorité compétente couvrant les arbres abattus.","Aucun arbre abattu"],["EN-CNF-3.3","Présence du plan de compensation ou de reboisement associé","Binaire","Plan ou engagement écrit de compensation (nombre de plants, lieu, délai).","Aucun arbre abattu"],["EN-CNF-3.4","Présence d’une trace d’exécution des plantations compensatoires","Binaire","Trace datée de plantation : procès-verbal, photographies datées ou attestation.","Aucun arbre abattu, ou délai de plantation non échu"],["SO-PRV-1.1","Présence d’un panneau de chantier portant l’identité du maître d’ouvrage, de l’entreprise et la durée des travaux","Binaire","Les trois mentions requises.","NA interdit"],["SO-PRV-1.2","Présence d’une trace de réunion ou de séance d’information des populations","Binaire","Procès-verbal, liste de présence ou compte rendu daté.","NA interdit"],["SO-PRV-1.3","Présence d’un contact affiché, lisible depuis l’extérieur, pour joindre le chantier","Binaire","Nom, numéro ou adresse, visible sans entrer sur l'emprise.","NA interdit"],["SO-PRV-1.4","Présence d’un affichage de la durée des travaux","Binaire","Durée ou dates de début et de fin affichées, lisibles depuis la voie publique. Recoupe SO-PRV-1.1.","NA interdit"],["SO-PRV-2.1","Présence d’un code de conduite signé par les travailleurs","Binaire","Le document doit porter des signatures. Un code affiché sans engagement individuel ne compte pas.","NA interdit"],["SO-PRV-2.2","Présence d’une sensibilisation aux violences et au harcèlement attestée par une trace","Binaire","Date, thème et émargement requis.","NA interdit"],["SO-PRV-2.3","Présence d’un affichage du dispositif de signalement","Binaire","À qui s'adresser, comment, et la mention que le signalement n'expose pas à des représailles.","NA interdit"],["SO-PRV-2.4","Présence d’un point focal désigné et connu des travailleurs","Binaire","Désignation écrite, puis deux travailleurs interrogés au hasard doivent le nommer.","NA interdit"],["SO-PRT-1.1","Présence d'une clôture ou palissade continue sur les côtés donnant sur la voie publique","Binaire","Zéro s'il existe une brèche par laquelle un tiers peut entrer.","NA interdit"],["SO-PRT-1.2","Présence d'un cheminement piéton séparé de l'emprise et de la circulation des engins","Binaire","Passage piéton balisé ou protégé, séparé de l'emprise et des engins. Zéro si les piétons doivent marcher sur la chaussée ou dans l'emprise.","Aucune circulation piétonne aux abords"],["SO-PRT-1.3","Présence d'un ouvrage de franchissement là où l'emprise coupe un accès riverain","Binaire","Passerelle, plaque ou remblai. Une planche isolée ne compte pas.","L'emprise ne coupe aucun accès riverain"],["SO-PRT-1.4","Absence de matériaux ou de déblais empiétant sur la voie publique","Binaire","Constat le long des limites de l'emprise. Zéro dès qu'un dépôt réduit la chaussée ou le trottoir.","NA interdit"],["SO-PRT-2.1","Présence d’un interlocuteur désigné pour recevoir les plaintes, connu des travailleurs","Binaire","Désignation écrite, puis deux travailleurs interrogés au hasard doivent le nommer.","NA interdit"],["SO-PRT-2.2","Présence d’un registre ou d’un canal de signalement","Binaire","Cahier, boîte à plaintes, numéro dédié ou formulaire, existant et accessible aux travailleurs.","NA interdit"],["SO-PRT-2.3","Présence d’une trace de traitement des plaintes reçues","Binaire","Pour chaque plainte enregistrée, une réponse ou une mesure datée. Une seule plainte sans suite fait tomber à zéro.","Aucune plainte reçue"],["SO-PRT-2.4","Présence d’installations sanitaires séparées et fermant à clé pour les femmes","Binaire","Cabinets réservés aux femmes, signalés, avec porte fermant de l'intérieur, accessibles aux ouvrières (pas seulement au personnel de bureau).","Le chantier n'emploie aucune femme"],["SO-PRT-3.1","Absence de dépôt de déchets ou de matériaux sur la voie publique","Binaire","Constat le long de l'emprise. Zéro dès qu'un dépôt de déchets ou de matériaux est constaté hors emprise.","NA interdit"],["SO-PRT-3.2","Absence d'obstruction des caniveaux et canaux d'écoulement","Binaire","Caniveaux, avaloirs et canaux jouxtant le chantier. Zéro s'ils sont obstrués par des matériaux, déblais ou laitance du chantier.","Aucun caniveau ni canal aux abords"],["SO-PRT-3.3","Absence d’écoulement d’eau vers les propriétés riveraines","Binaire","On suit les tuyaux de pompage et les écoulements. Zéro si l'eau du chantier se dirige vers une parcelle riveraine.","NA interdit"],["SO-PRT-3.4","Présence d'un bâchage des camions de matériaux fins à la sortie du chantier","Binaire","Tous les camions de matériaux fins observés à la sortie. Recoupe EN-PRV-3.4.","Aucun camion de matériaux fins observé à la sortie"],["SO-CNF-1.1","Présence de l'immatriculation à la CNSS de chaque entreprise intervenant sur le chantier","Binaire","Pour chaque entreprise présente (titulaire et sous-traitants), un numéro d'immatriculation employeur ou une attestation CNSS. Une seule entreprise sans pièce : 0. Les tâcherons relèvent de SO-CNF-1.3 et 1.4.","NA interdit"],["SO-CNF-1.2","Présence de l'attestation de régularité CNSS en cours de validité pour chaque entreprise intervenant sur le chantier","Binaire","Pour chaque entreprise présente, une attestation dont la validité couvre le jour de la visite. Une seule attestation absente ou périmée : 0. Les tâcherons relèvent de SO-CNF-1.3 et 1.4.","NA interdit"],["SO-CNF-1.3","Présence de la liste des tâcherons intervenant sur le chantier","Binaire","Liste écrite et à jour des tâcherons présents sur le chantier.","Le chantier ne recourt pas au tâcheronnat"],["SO-CNF-1.4","Présence d'un contrat écrit pour au moins un tâcheron","Binaire","Au moins un contrat écrit et signé avec un tâcheron intervenant sur le chantier.","Le chantier ne recourt pas au tâcheronnat"],["SO-CNF-2.1","Absence de travailleur de moins de quatorze ans sur le chantier","Binaire","Âge vérifié sur pièce (identité ou registre) si les pièces sont disponibles ; à défaut, par observation et déclaration de l'encadrement, méthode notée en observation. Zéro dès qu'un travailleur de moins de quatorze ans est constaté ou déclaré.","NA interdit"],["SO-CNF-2.2","Absence de travailleur de moins de dix-huit ans dans les zones où il peut toucher des conducteurs sous tension","Binaire","Même méthode que SO-CNF-2.1. Zéro si un travailleur de moins de dix-huit ans est affecté à une zone où il peut toucher des conducteurs sous tension.","Aucun travailleur de moins de dix-huit ans, vérifié sur pièce"],["SO-CNF-2.3","Taux de travailleurs dont la date de naissance est renseignée au registre du personnel","Taux","Numérateur : travailleurs dont la date de naissance est renseignée au registre du personnel, toutes entreprises confondues. Dénominateur : effectif inscrit aux registres ; à défaut de registre, effectif présent le jour de la visite. Registre absent du site, ou présent sans dates de naissance : numérateur 0. Pas de NA.","NA interdit"],["SO-CNF-3.1","Présence du volet social du plan de gestion, décliné au chantier","Binaire","Emploi local, gestion des plaintes, information des populations, prévention des violences.","NA interdit"],["SO-CNF-3.2","Présence d’un responsable social ou d’un point focal désigné pour sa mise en œuvre","Binaire","Désignation écrite, et l'encadrement le nomme.","NA interdit"],["SO-CNF-3.3","Présence des rapports de suivi social transmis au maître d’ouvrage","Binaire","Rapports datés, avec trace de transmission au maître d'ouvrage.","NA interdit"],["SO-CNF-3.4","Présence d’une trace de suite donnée aux écarts sociaux relevés lors des missions de contrôle","Binaire","Pour chaque écart social relevé, une action datée.","Aucun écart relevé"]];
+
+var DIMS = ['Santé','Sécurité','Environnement','Social'];
+var KEYS = ['sa','se','en','so'];
+var PARS = ['Prévention','Protection','Conformité'];
+var PKEY = ['prv','prt','cnf'];
+var NSI  = {sa:32, se:36, en:32, so:31};
+var NIV  = ['Initial','Basique','Défini','Maîtrisé','Optimisé'];
+
+var STORE = 'hse_plateforme_v1';
+var D = { visites: [] };
+var actif = -1;
+var dimActive = 0;
+
+function lire() {
+  try {
+    var s = window.localStorage.getItem(STORE);
+    if (s) { var o = JSON.parse(s); if (o && o.visites) { D = o; } }
+  } catch (e) {}
+}
+function ecrire() {
+  try { window.localStorage.setItem(STORE, JSON.stringify(D)); } catch (e) {}
+  var t = document.getElementById('json');
+  if (t) { t.value = JSON.stringify(D, null, 1); }
+}
+function niveau(v) {
+  if (v === null || v === undefined || isNaN(v)) return 0;
+  if (v < 20) return 1;
+  if (v < 40) return 2;
+  if (v < 60) return 3;
+  if (v < 80) return 4;
+  return 5;
+}
+function fmt(v) {
+  if (v === null || v === undefined || isNaN(v)) return '—';
+  return Number(v).toFixed(2).replace('.', ',');
+}
+function indice(vis, k) {
+  var s = 0, n = 0;
+  for (var i = 0; i < 3; i++) {
+    var x = vis.par[k][PKEY[i]];
+    if (x !== null && x !== undefined && x !== '' && !isNaN(x)) { s += Number(x); n++; }
+  }
+  return n ? s / n : NaN;
+}
+function ech(s) {
+  return String(s === null || s === undefined ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+function val(id) {
+  var e = document.getElementById(id);
+  return e ? e.value.trim() : '';
+}
+function num(id) {
+  var v = val(id);
+  return v === '' ? null : Number(v.replace(',', '.'));
+}
+
+/* ------------------------------------------------------------ formulaire */
+function videForm() {
+  ['f_code','f_nom','f_loc','f_nat','f_phase','f_date','f_eff','f_femmes','f_ent','f_obs']
+    .forEach(function (id) { var e = document.getElementById(id); if (e) e.value = ''; });
+  KEYS.forEach(function (k) {
+    PKEY.forEach(function (p) {
+      var e = document.getElementById('f_' + k + '_' + p); if (e) e.value = '';
+    });
+    var a = document.getElementById('a_' + k); if (a) a.value = '';
+    var n = document.getElementById('n_' + k); if (n) n.value = '';
+  });
+  message('');
+}
+function message(t, ok) {
+  var e = document.getElementById('msg');
+  if (!e) return;
+  e.textContent = t || '';
+  e.style.color = ok ? 'var(--accent)' : 'var(--alert-ink)';
+}
+function ajouter() {
+  var code = val('f_code');
+  if (!code) { message('Le code du chantier est nécessaire.'); return; }
+  var vis = {
+    code: code, nom: val('f_nom'), loc: val('f_loc'), nat: val('f_nat'),
+    phase: val('f_phase'), date: val('f_date'), eff: num('f_eff'),
+    femmes: num('f_femmes'), ent: val('f_ent'), obs: val('f_obs'),
+    par: {}, alertes: {}, na: {}
+  };
+  var vide = true;
+  KEYS.forEach(function (k) {
+    vis.par[k] = {};
+    PKEY.forEach(function (p) {
+      var x = num('f_' + k + '_' + p);
+      vis.par[k][p] = x;
+      if (x !== null) vide = false;
+    });
+    vis.alertes[k] = num('a_' + k);
+    vis.na[k] = num('n_' + k);
+  });
+  if (vide) { message('Aucun score de paramètre saisi.'); return; }
+  D.visites.push(vis);
+  actif = D.visites.length - 1;
+  ecrire();
+  rendre();
+  videForm();
+  message('Visite ' + code + ' enregistrée.', true);
+}
+function exemple() {
+  document.getElementById('f_code').value = 'CIIEL';
+  document.getElementById('f_nom').value = "Centre d'Identification Immigration-Émigration et Élection";
+  document.getElementById('f_loc').value = 'Akpakpa, Cotonou';
+  document.getElementById('f_nat').value = 'Bâtiment';
+  document.getElementById('f_phase').value = 'Gros œuvre';
+  document.getElementById('f_date').value = '2026-09-17';
+  document.getElementById('f_eff').value = '140';
+  document.getElementById('f_femmes').value = '1';
+  document.getElementById('f_obs').value = 'SODJI Ange-Marie';
+  var v = { sa:[54.46,58.33,75.69], se:[100,94.44,75], en:[87.80,75,95.83], so:[87.50,88.89,69.44] };
+  var a = { sa:8, se:3, en:3, so:5 };
+  var n = { sa:3, se:4, en:2, so:4 };
+  KEYS.forEach(function (k) {
+    PKEY.forEach(function (p, i) { document.getElementById('f_' + k + '_' + p).value = v[k][i]; });
+    document.getElementById('a_' + k).value = a[k];
+    document.getElementById('n_' + k).value = n[k];
+  });
+  message('Exemple chargé — ajustez puis enregistrez.', true);
+}
+
+/* ------------------------------------------------------------------ rendu */
+function listeVisites() {
+  var box = document.getElementById('vislist');
+  var cpt = document.getElementById('nvis');
+  if (!box) return;
+  cpt.textContent = D.visites.length;
+  if (!D.visites.length) {
+    box.innerHTML = '<div class="empty">Aucune visite enregistrée.</div>';
+    return;
+  }
+  box.innerHTML = D.visites.map(function (v, i) {
+    return '<div class="vrow"><div><div class="code">' + ech(v.code) +
+      (v.date ? ' · ' + ech(v.date) : '') + '</div><div class="tiny muted">' +
+      ech(v.loc || v.nom || '') + '</div></div><div class="btnrow" style="margin:0;">' +
+      '<button class="btn" type="button" data-sel="' + i + '">' +
+      (i === actif ? 'Sélectionnée' : 'Sélectionner') + '</button>' +
+      '<button class="btn" type="button" data-del="' + i + '">Supprimer</button></div></div>';
+  }).join('');
+  [].slice.call(box.querySelectorAll('[data-sel]')).forEach(function (b) {
+    b.addEventListener('click', function () {
+      actif = Number(b.getAttribute('data-sel')); rendre();
+    });
+  });
+  [].slice.call(box.querySelectorAll('[data-del]')).forEach(function (b) {
+    b.addEventListener('click', function () {
+      D.visites.splice(Number(b.getAttribute('data-del')), 1);
+      if (actif >= D.visites.length) actif = D.visites.length - 1;
+      ecrire(); rendre();
+    });
+  });
+}
+
+function vide(id, texte) {
+  document.getElementById(id).innerHTML = '<div class="empty">' + texte + '</div>';
+}
+
+function rendreSaisie() {
+  var v = D.visites[actif];
+  if (!v) {
+    document.getElementById('s_titre').textContent = 'Aucune visite';
+    document.getElementById('s_sub').textContent = '';
+    vide('s_body', "Ouvrez la page Import pour saisir les résultats d'une visite.");
+    return;
+  }
+  document.getElementById('s_titre').textContent = v.nom || v.code;
+  document.getElementById('s_sub').textContent =
+    [v.code, v.date, v.loc].filter(Boolean).join(' · ');
+  var ligne = function (k, x) {
+    return '<div class="vrow"><span class="tiny muted">' + k + '</span><span>' + ech(x || '—') + '</span></div>';
+  };
+  document.getElementById('s_body').innerHTML =
+    '<div class="card">' +
+    ligne('Code du chantier', v.code) + ligne('Intitulé', v.nom) +
+    ligne('Localisation', v.loc) + ligne("Nature de l'ouvrage", v.nat) +
+    ligne("Phase d'avancement", v.phase) + ligne('Date de visite', v.date) +
+    ligne('Effectif présent', v.eff === null ? '' : v.eff + (v.femmes !== null ? ' dont ' + v.femmes + ' femme(s)' : '')) +
+    ligne('Entreprise exécutante', v.ent) + ligne('Évaluateur', v.obs) +
+    '</div>';
+}
+
+function rendreCalcul() {
+  var v = D.visites[actif];
+  if (!v) { vide('c_body', 'Aucune visite sélectionnée.'); return; }
+  var h = '<div class="matrix"><span></span><span class="h">Prév.</span><span class="h">Prot.</span>' +
+          '<span class="h">Conf.</span><span class="h">Indice</span>';
+  KEYS.forEach(function (k, j) {
+    h += '<span class="r">' + DIMS[j] + '</span>';
+    PKEY.forEach(function (p) {
+      var x = v.par[k][p];
+      h += '<span class="c p' + niveau(x) + '">' + fmt(x) + '</span>';
+    });
+    var id = indice(v, k);
+    h += '<span class="c p' + niveau(id) + '"><strong>' + fmt(id) + '</strong></span>';
+  });
+  h += '</div>';
+  document.getElementById('c_body').innerHTML = h;
+}
+
+function rendreRapport() {
+  var v = D.visites[actif];
+  if (!v) {
+    document.getElementById('r_code').textContent = '—';
+    document.getElementById('r_titre').textContent = 'Aucune visite';
+    document.getElementById('r_sub').textContent = '';
+    vide('r_body', "Ouvrez la page Import pour saisir les résultats d'une visite.");
+    return;
+  }
+  document.getElementById('r_code').textContent =
+    (v.code || '').toUpperCase() + (v.date ? ' · VISITE DU ' + v.date : '');
+  document.getElementById('r_titre').textContent = v.nom || v.code;
+  var sub = [];
+  if (v.loc) sub.push(v.loc);
+  if (v.nat) sub.push(v.nat);
+  if (v.phase) sub.push(v.phase);
+  if (v.eff !== null) sub.push(v.eff + ' travailleurs présents' + (v.femmes !== null ? ' dont ' + v.femmes + ' femme(s)' : ''));
+  if (v.obs) sub.push('évaluateur : ' + v.obs);
+  document.getElementById('r_sub').textContent = sub.join(' · ');
+
+  var tA = 0, tN = 0, tC = 0;
+  KEYS.forEach(function (k) {
+    tA += Number(v.alertes[k] || 0);
+    tN += Number(v.na[k] || 0);
+    tC += NSI[k] - Number(v.na[k] || 0);
+  });
+
+  var h = '';
+  if (tA > 0) {
+    h += '<div class="alertbar"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" ' +
+      'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" ' +
+      'aria-hidden="true"><path d="M12 9v4"/><path d="M12 17h.01"/>' +
+      '<path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>' +
+      '<span><strong>' + tA + (tA > 1 ? ' alertes' : ' alerte') + '</strong> — sous-indicateurs cotés au ' +
+      "niveau le plus bas. Elles sont signalées à part et n'entrent pas dans le calcul des indices." +
+      '</span></div>';
+  }
+
+  h += '<div class="grid4" style="margin-bottom:14px;">';
+  KEYS.forEach(function (k, j) {
+    var id = indice(v, k), n = niveau(id);
+    h += '<div class="idx"><div class="idx__bar" style="background:var(--n' + n + '-bar);"></div>' +
+      '<div class="idx__body"><div class="idx__name">' + DIMS[j] + '</div>' +
+      '<div class="idx__val">' + fmt(id) + '</div>' +
+      '<span class="pill p' + n + '">' + (n ? NIV[n - 1] : '—') + '</span>' +
+      '<div class="idx__meta">' + (NSI[k] - Number(v.na[k] || 0)) + ' cotés · ' +
+      Number(v.na[k] || 0) + ' NA · ' + Number(v.alertes[k] || 0) + ' alerte' +
+      (Number(v.alertes[k] || 0) > 1 ? 's' : '') + '</div></div></div>';
+  });
+  h += '</div>';
+
+  h += '<div class="card"><h2>Décomposition par paramètre</h2>' +
+    '<p class="tiny muted" style="margin-bottom:14px;">Prévention : empêcher le risque · ' +
+    "Protection : en limiter l'impact · Conformité : la règle et sa trace</p>" +
+    '<div class="matrix"><span></span><span class="h">Prév.</span><span class="h">Prot.</span><span class="h">Conf.</span>';
+  KEYS.forEach(function (k, j) {
+    h += '<span class="r">' + DIMS[j] + '</span>';
+    PKEY.forEach(function (p) {
+      var x = v.par[k][p];
+      h += '<span class="c p' + niveau(x) + '">' + fmt(x) + '</span>';
+    });
+  });
+  h += '</div><div class="legend">' +
+    '<span><span class="sw" style="background:var(--n1-bg);"></span>Initial · 0 à 20</span>' +
+    '<span><span class="sw" style="background:var(--n2-bg);"></span>Basique · 20 à 40</span>' +
+    '<span><span class="sw" style="background:var(--n3-bg);"></span>Défini · 40 à 60</span>' +
+    '<span><span class="sw" style="background:var(--n4-bg);"></span>Maîtrisé · 60 à 80</span>' +
+    '<span><span class="sw" style="background:var(--n5-bg);"></span>Optimisé · 80 à 100</span>' +
+    '</div><div class="btnrow"><button class="btn" type="button" data-go="detail" ' +
+    'style="width:100%;">Détail par dimension</button></div></div>';
+
+  h += '<div class="card card--flat"><h2>Base de calcul</h2><p class="small">' +
+    tC + ' sous-indicateurs cotés sur 131 · ' + tN + ' non applicables · ' + tA +
+    " alertes. Un indice calculé sur une base réduite ne se lit pas comme un indice calculé sur la " +
+    'base entière.</p></div>';
+
+  document.getElementById('r_body').innerHTML = h;
+  [].slice.call(document.querySelectorAll('#r_body [data-go]')).forEach(function (b) {
+    b.addEventListener('click', function () { montrer('v-' + b.getAttribute('data-go')); });
+  });
+}
+
+function rendreDetail() {
+  var v = D.visites[actif];
+  var sel = document.getElementById('dimsel');
+  sel.innerHTML = DIMS.map(function (d, i) {
+    return '<button class="fbtn' + (i === dimActive ? ' is-on' : '') + '" type="button" data-dim="' + i + '">' + d + '</button>';
+  }).join('');
+  [].slice.call(sel.querySelectorAll('[data-dim]')).forEach(function (b) {
+    b.addEventListener('click', function () {
+      dimActive = Number(b.getAttribute('data-dim')); rendreDetail();
+    });
+  });
+  if (!v) {
+    document.getElementById('d_titre').textContent = 'Aucune visite';
+    vide('d_body', 'Aucune visite sélectionnée.');
+    return;
+  }
+  var k = KEYS[dimActive];
+  document.getElementById('d_titre').textContent = DIMS[dimActive] + ' — ' + (v.code || '');
+  var id = indice(v, k), n = niveau(id);
+  var h = '<div class="card"><div class="idx"><div class="idx__bar" style="background:var(--n' + n +
+    '-bar);"></div><div class="idx__body"><div class="idx__name">Indice ' + DIMS[dimActive] +
+    '</div><div class="idx__val">' + fmt(id) + '</div><span class="pill p' + n + '">' +
+    (n ? NIV[n - 1] : '—') + '</span><div class="idx__meta">' +
+    (NSI[k] - Number(v.na[k] || 0)) + ' cotés · ' + Number(v.na[k] || 0) + ' NA · ' +
+    Number(v.alertes[k] || 0) + ' alertes</div></div></div></div>';
+  h += '<div class="card"><h2>Les trois paramètres</h2><div class="matrix">' +
+    '<span></span><span class="h">Score</span><span class="h">Niveau</span>';
+  PKEY.forEach(function (p, i) {
+    var x = v.par[k][p], nn = niveau(x);
+    h += '<span class="r">' + PARS[i] + '</span><span class="c p' + nn + '">' + fmt(x) +
+      '</span><span class="c">' + (nn ? NIV[nn - 1] : '—') + '</span>';
+  });
+  h += '</div></div>';
+  h += '<div class="card card--flat"><h2>Règle appliquée</h2><p class="small">Le score du paramètre ' +
+    "est la moyenne des indicateurs qui le composent, et l'indice de la dimension la moyenne de ses " +
+    'trois paramètres. Les sous-indicateurs non applicables sont retirés du dénominateur.</p></div>';
+  document.getElementById('d_body').innerHTML = h;
+}
+
+function rendreSuivi() {
+  if (!D.visites.length) { vide('u_body', 'Aucune visite enregistrée.'); return; }
+  var h = '<div class="card"><div class="tablebox"><table class="t"><thead><tr>' +
+    '<th>Chantier</th><th>Date</th><th>Phase</th><th>Santé</th><th>Sécurité</th>' +
+    '<th>Environ.</th><th>Social</th><th>Alertes</th><th>NA</th></tr></thead><tbody>';
+  D.visites.forEach(function (v) {
+    var tA = 0, tN = 0;
+    KEYS.forEach(function (k) { tA += Number(v.alertes[k] || 0); tN += Number(v.na[k] || 0); });
+    h += '<tr><td>' + ech(v.code) + '</td><td>' + ech(v.date || '—') + '</td><td>' +
+      ech(v.phase || '—') + '</td>';
+    KEYS.forEach(function (k) {
+      var x = indice(v, k);
+      h += '<td class="num p' + niveau(x) + '">' + fmt(x) + '</td>';
+    });
+    h += '<td class="num">' + tA + '</td><td class="num">' + tN + '</td></tr>';
+  });
+  h += '</tbody></table></div></div>';
+  document.getElementById('u_body').innerHTML = h;
+}
+
+function rendre() {
+  listeVisites();
+  rendreSaisie();
+  rendreCalcul();
+  rendreRapport();
+  rendreDetail();
+  rendreSuivi();
+  ecrire();
+}
+
+/* ------------------------------------------------------------- navigation */
+var panneaux = [].slice.call(document.querySelectorAll('.panel'));
+var couv = document.getElementById('v-cover');
+var titres = { 'v-accueil':'HSE', 'v-guide':'Guide', 'v-referentiel':'Référentiel',
+  'v-import':'Import', 'v-saisie':'Saisie', 'v-calcul':'Calcul', 'v-rapport':'Rapport',
+  'v-detail':'Détail', 'v-suivi':'Suivi' };
+var courant = 'v-accueil';
+
+function montrer(id) {
+  couv.classList.remove('is-on');
+  document.body.classList.remove('is-cover');
+  panneaux.forEach(function (p) { p.hidden = (p.id !== id); });
+  courant = id;
+  document.getElementById('ptitle').textContent = titres[id] || 'HSE';
+  window.scrollTo(0, 0);
+}
+function couverture() {
+  couv.classList.add('is-on');
+  document.body.classList.add('is-cover');
+  panneaux.forEach(function (p) { p.hidden = true; });
+  courant = 'v-cover';
+}
+document.getElementById('enter').addEventListener('click', function () { montrer('v-accueil'); });
+document.getElementById('back').addEventListener('click', function () {
+  if (courant === 'v-accueil') { couverture(); } else { montrer('v-accueil'); }
+});
+[].slice.call(document.querySelectorAll('[data-go]')).forEach(function (b) {
+  b.addEventListener('click', function () { montrer('v-' + b.getAttribute('data-go')); });
+});
+
+/* ------------------------------------------------------------- référentiel */
+function rendreRegles() {
+  var box = document.getElementById('rules');
+  if (!box) return;
+  var q = (document.getElementById('q') || {}).value || '';
+  q = q.toLowerCase();
+  var f = box.getAttribute('data-dim') || '';
+  var out = '';
+  REGLES.forEach(function (r) {
+    if (f && r[0].indexOf(f) !== 0) return;
+    if (q && (r[0] + ' ' + r[1] + ' ' + r[3]).toLowerCase().indexOf(q) < 0) return;
+    out += '<div class="rule"><div class="rule__h"><span class="code">' + ech(r[0]) +
+      '</span><span class="tag">' + ech(r[2]) + '</span></div><div class="rule__t">' +
+      ech(r[1]) + '</div><div class="rule__r">' + ech(r[3]) + '</div>' +
+      '<div class="rule__na">Non applicable : ' + ech(r[4]) + '</div></div>';
+  });
+  box.innerHTML = out || '<div class="empty">Aucune règle ne correspond.</div>';
+}
+var qi = document.getElementById('q');
+if (qi) { qi.addEventListener('input', rendreRegles); }
+[].slice.call(document.querySelectorAll('#dimfilters .fbtn')).forEach(function (b) {
+  b.addEventListener('click', function () {
+    [].slice.call(document.querySelectorAll('#dimfilters .fbtn')).forEach(function (o) {
+      o.classList.remove('is-on');
+    });
+    b.classList.add('is-on');
+    document.getElementById('rules').setAttribute('data-dim', b.getAttribute('data-f') || '');
+    rendreRegles();
+  });
+});
+
+/* ----------------------------------------------------------------- boutons */
+document.getElementById('b_add').addEventListener('click', ajouter);
+document.getElementById('b_clearform').addEventListener('click', videForm);
+document.getElementById('b_demo').addEventListener('click', exemple);
+document.getElementById('b_reset').addEventListener('click', function () {
+  D = { visites: [] }; actif = -1; ecrire(); rendre();
+  message('Toutes les visites ont été effacées.', true);
+});
+document.getElementById('b_copy').addEventListener('click', function () {
+  var t = document.getElementById('json');
+  t.select();
+  try { document.execCommand('copy'); message('Bloc copié.', true); }
+  catch (e) { message('Sélectionnez le bloc et copiez-le à la main.'); }
+});
+document.getElementById('b_load').addEventListener('click', function () {
+  try {
+    var o = JSON.parse(document.getElementById('json').value);
+    if (!o || !o.visites) throw 0;
+    D = o; actif = D.visites.length ? 0 : -1; ecrire(); rendre();
+    message(D.visites.length + ' visite(s) chargée(s).', true);
+  } catch (e) { message('Le bloc collé n\'est pas lisible.'); }
+});
+
+/* -------------------------------------------------------------- démarrage */
+lire();
+if (D.visites.length) actif = 0;
+panneaux.forEach(function (p) { p.hidden = true; });
+couverture();
+rendreRegles();
+rendre();
+
+</script>
+</body>
+</html>
